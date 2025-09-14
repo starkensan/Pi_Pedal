@@ -15,13 +15,13 @@
 #include "driver/ExpPedal/ExpPedal.h"
 #include "driver/DrawMenu/DrawMenu.h"
 
+
 Adafruit_NeoPixel pixels(1, WS2812_PIN, NEO_GRB + NEO_KHZ800);
 
 RotaryEncoder myRE(DT_PIN, CLK_PIN, RE_SW_PIN, 1000, 100);
-
 Adafruit_USBD_MIDI usb_midi;
-
 MIDI_CREATE_INSTANCE(Adafruit_USBD_MIDI, usb_midi, MIDI);
+
 
 ExpPedal expPedal(&MIDI, 0);
 
@@ -121,13 +121,9 @@ void setup() {
 void setup1(){
 
   expPedal.begin(&Wire1, SDA1_PIN, SCL1_PIN);
-
   myPedals.begin();
-
   usb_midi.setStringDescriptor("PiPedal");
-
   MIDI.begin(1);
-
   while( !TinyUSBDevice.mounted() ) delay(1);
 }
 
