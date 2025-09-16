@@ -14,7 +14,7 @@
 #include "driver/PedalMon/PedalMon.h"
 #include "driver/ExpPedal/ExpPedal.h"
 #include "driver/DrawMenu/DrawMenu.h"
-
+#include "lib/DisplayState/DisplayState.h"
 
 Adafruit_NeoPixel pixels(1, WS2812_PIN, NEO_GRB + NEO_KHZ800);
 
@@ -29,78 +29,16 @@ PedalMon myPedals(&MIDI, PEDAL_PIN, PEDAL_CON_NUM, PEDAL_NUMBER);
 
 DrawMenu myMenu(&Wire, SDA0_PIN, SCL0_PIN);
 
-enum MenuState{
-  DEDFALUT,
-  MAIN_MENU,
-  ASSIGN_MENU,
-  PEDAL_MENU,
-  PC_MENU,
-  CC_MENU,
-  EXPCC_MENU,
-  MENU_COUNT
-};
-
-const int menuItemCount[MENU_COUNT]{
-  0,
-  3,
-  8,
-  3,
-  3,
-  4,
-  3
-};
-
-MenuState currentMenuState = MAIN_MENU;
-
-int currentSelection = 0;
-
-int _test_value = 0;
-
-
 /*
 Callback Functions
 */
 
 void onEncorderChange(){
-
-  if(myRE.getDirection() > 0){
-    currentSelection++;
-  }else if(myRE.getDirection() < 0){
-    currentSelection--;
-  }
-
-  if(currentSelection < 0){
-    currentSelection = 0;
-  }else if(currentSelection > menuItemCount[currentMenuState] - 1){
-    currentSelection = menuItemCount[currentMenuState] - 1;
-  }
-
-  switch (currentMenuState) {
-    case MAIN_MENU:
-      myMenu.drawMainMenu(currentSelection);
-      break;
-
-    case ASSIGN_MENU:
-      myMenu.drawAssignMenu(currentSelection);
-      break;
-  }
   
 }
 
 void onSwitchChange(){
-  switch (currentMenuState) {
-    case MAIN_MENU:
-      if(currentSelection == 0){
 
-      }else if(currentSelection == 1){
-        currentMenuState = ASSIGN_MENU;
-        myMenu.drawAssignMenu(currentSelection);
-        currentSelection = 0;
-      }else if(currentSelection == 2){
-        
-      } 
-      break;
-  }
 }
 
 void setup() {
