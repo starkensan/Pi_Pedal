@@ -10,7 +10,7 @@
 
 #include "config.h"
 
-#include "driver/RotaryEncoder/RotaryEncoder.h"
+#include "lib/driver/RotaryEncoder/RotaryEncoder.h"
 #include "driver/PedalMon/PedalMon.h"
 #include "driver/ExpPedal/ExpPedal.h"
 #include "driver/DrawMenu/DrawMenu.h"
