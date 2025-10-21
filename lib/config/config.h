@@ -1,11 +1,13 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-/*
-Pin Configuration
-*/
+#define MCP_I2C_INSTANCE Wire1
 
-#define EXP_PIN 28
+#define OLED_I2C_INSTANCE Wire
+
+#define PEDAL_NUMBER 6
+
+#define EXP_CH 0
 
 #define CLK_PIN 15
 #define DT_PIN 26
@@ -25,13 +27,5 @@ Pin Configuration
 #define PEDAL6_PIN 11
 
 #define WS2812_PIN 16
-
-/*
-Other Configuration
-*/
-
-#define PEDAL_NUMBER 6
-
-#define EXP_CH 0
 
 #endif

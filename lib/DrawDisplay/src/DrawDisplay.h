@@ -17,9 +17,9 @@
 #define FONT_HEIGHT 6
 class DrawDisplay {
 public:
-    DrawDisplay(TwoWire* wireInstance, int SDA, int SCL);
+    DrawDisplay();
 
-    void begin(int screenWidth, int screenHeight, int screenAddress=DEFAULT_SCREEN_ADDRESS);
+    void begin(TwoWire* wireInstance, int SDA, int SCL, int screenWidth, int screenHeight, int screenAddress=DEFAULT_SCREEN_ADDRESS);
     void clearDisplay();
     void drawCentreString(const String &buf);
     void drawCentreNumber(const int Number);
