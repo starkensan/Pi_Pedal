@@ -1,17 +1,12 @@
 #include <Arduino.h>
-
-#include <DrawDisplay.h>
-
-#include <Config.h>
+#include <DebugLog.h>
+#include <config.h>
 
 void setup() {
-}
+    Serial.begin(115200);
 
-void setup1() {
+    LOG_SET_LEVEL(DebugLogLevel::LVL_INFO);
 }
 
 void loop() {
-}
-
-void loop1() {
 }

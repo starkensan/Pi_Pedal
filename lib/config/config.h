@@ -29,26 +29,11 @@ Pin Configuration
 const int PEDAL_PIN[] = {PEDAL1_PIN, PEDAL2_PIN, PEDAL3_PIN, PEDAL4_PIN, PEDAL5_PIN, PEDAL6_PIN};
 
 /*
-Display Configuration
-*/
-
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
-
-#define FONT_WIDTH 8
-#define FONT_HEIGHT 6
-
-#define OLED_RESET     -1
-#define SCREEN_ADDRESS 0x3C
-
-/*
 Other Configuration
 */
 
 #define PEDAL_NUMBER 6
 
 #define EXP_CH 0
-
-const int PEDAL_CON_NUM[] = {1,2,3,4,5,6};
 
 #endif

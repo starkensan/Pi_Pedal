@@ -1,33 +1,51 @@
 #include "DrawDisplay.h"
 
 DrawDisplay::DrawDisplay(TwoWire* wireInstance, int SDA_PIN, int SCL_PIN) : wire(wireInstance){
-    Wire.setSDA(SDA_PIN);
-    Wire.setSCL(SCL_PIN);
+	wire = wireInstance;
+    wire->setSDA(SDA_PIN);
+    wire->setSCL(SCL_PIN);
 }
 
-void DrawDisplay::init(int screenWidth, int screenHeight){
-		display = new Adafruit_SSD1306(screenWidth, screenHeight, wire, OLED_RESET);
+void DrawDisplay::begin(int width, int height, int address){
+	screenWidth = width;
+	screenHeight = height;
+	display = new Adafruit_SSD1306(screenWidth, screenHeight, wire, OLED_RESET);
 
-	if(!display->begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
-		Serial.println(F("SSD1306 allocation failed"));
+	if(!display->begin(SSD1306_SWITCHCAPVCC, address)) {
+		LOG_ERROR(F("[Display] allocation failed"));
 		for(;;); // Don't proceed, loop forever
 	}
 
+	display->clearDisplay();
 	display->display();
 
+	LOG_INFO(F("[Display] initialized"));
+
+}
+
+void DrawDisplay::clearDisplay(){
+	LOG_INFO(F("[Display] cleared"));
+	display->clearDisplay();
+	display->display();
 }
 
 void DrawDisplay::drawCentreString(const String &buf)
 {
+	LOG_INFO("[Display] drawCentreString: " + buf);
+	display->clearDisplay();
 	int16_t x1, y1;
 	uint16_t w, h;
-	display->getTextBounds(buf, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, &x1, &y1, &w, &h);
+	display->getTextBounds(buf, screenWidth/2, screenHeight/2, &x1, &y1, &w, &h);
 	display->setTextColor(SSD1306_WHITE);
-	display->setCursor(SCREEN_WIDTH/2 - w / 2, SCREEN_HEIGHT/2 - h / 2);
+	display->setCursor(screenWidth/2 - w / 2, screenHeight/2 - h / 2);
 	display->print(buf);
+
+	display->display();
 }
 
 void DrawDisplay::drawCentreNumber(const int Number){
+	LOG_INFO("[Display] drawCentreNumber: " + String(Number));
+	display->clearDisplay();
 
 	if(Number >= 100 || Number <= -10){
 		display->setTextSize(3);
@@ -35,10 +53,14 @@ void DrawDisplay::drawCentreNumber(const int Number){
 		display->setTextSize(4);
 	}
 	drawCentreString(String(Number));
+
+	display->display();
 }
 
 void DrawDisplay::drawMenu(const String items[3], int cursorIndex, bool invertCursor, const String rightTexts[3]){
 	
+	LOG_INFO(F("[Display] drawMenu"));
+
 	display->clearDisplay();
 	display->setTextSize(2);
 	display->setTextColor(SSD1306_WHITE);

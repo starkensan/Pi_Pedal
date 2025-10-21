@@ -1,14 +1,14 @@
-#ifndef PedalMon_h
-#define PedalMon_h
+#ifndef Pedal_h
+#define Pedal_h
 
 #include<Arduino.h>
 #include <Adafruit_TinyUSB.h>
 #include <MIDI.h>
 
-class PedalMon{
+class Pedal{
   public:
-    PedalMon(midi::MidiInterface<midi::SerialMIDI<Adafruit_USBD_MIDI>>* midiInstance, const int* pins, const int* PedalControlNumbers, int SwitchesNumber, unsigned long debounceDelay = 50);
-    ~PedalMon();
+    Pedal(midi::MidiInterface<midi::SerialMIDI<Adafruit_USBD_MIDI>>* midiInstance, const int* pins, const int* PedalControlNumbers, int SwitchesNumber, unsigned long debounceDelay = 50);
+    ~Pedal();
 
     void begin();
     void update();

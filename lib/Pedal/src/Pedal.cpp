@@ -1,7 +1,7 @@
-#include "PedalMon.h"
+#include "Pedal.h"
 
 // コンストラクタ
-PedalMon::PedalMon(midi::MidiInterface<midi::SerialMIDI<Adafruit_USBD_MIDI>>* midiInstance, const int* pins, const int* PedalControlNumbers, int SwitchesNumber, unsigned long debounceDelay) 
+Pedal::Pedal(midi::MidiInterface<midi::SerialMIDI<Adafruit_USBD_MIDI>>* midiInstance, const int* pins, const int* PedalControlNumbers, int SwitchesNumber, unsigned long debounceDelay) 
     : midi(midiInstance), pins(pins), controlNumbers(PedalControlNumbers), numSwitches(SwitchesNumber), debounceDelay(debounceDelay) {
     
     // スイッチの状態を保持する配列を初期化
@@ -10,13 +10,13 @@ PedalMon::PedalMon(midi::MidiInterface<midi::SerialMIDI<Adafruit_USBD_MIDI>>* mi
     lastChangeTimes = new unsigned long[numSwitches]; // デバウンス用の時間配列
 }
 
-PedalMon::~PedalMon() {
+Pedal::~Pedal() {
     delete[] currentStates;
     delete[] previousStates;
     delete[] lastChangeTimes;
 }
 
-void PedalMon::begin(){
+void Pedal::begin(){
   // スイッチのピンを設定し、初期状態を読み込む
     for (int i = 0; i < numSwitches; i++) {
         pinMode(pins[i], INPUT_PULLUP);
@@ -27,7 +27,7 @@ void PedalMon::begin(){
 }
 
 // 状態チェックとコールバックの呼び出し
-void PedalMon::update() {
+void Pedal::update() {
     for (int i = 0; i < numSwitches; i++) {
         int reading = digitalRead(pins[i]);
         unsigned long currentTime = millis();
@@ -42,6 +42,6 @@ void PedalMon::update() {
     }
 }
 
-void PedalMon::sendSwitchesMIDI(int switchIndex, int state){
+void Pedal::sendSwitchesMIDI(int switchIndex, int state){
   midi->sendControlChange(controlNumbers[switchIndex], state ? 0 : 127, 1);
 }
