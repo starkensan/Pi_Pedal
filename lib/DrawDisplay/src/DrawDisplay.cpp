@@ -1,12 +1,11 @@
 #include "DrawDisplay.h"
 
-DrawDisplay::DrawDisplay(TwoWire* wireInstance, int SDA_PIN, int SCL_PIN) : wire(wireInstance){
+DrawDisplay::DrawDisplay(){}
+
+void DrawDisplay::begin(TwoWire* wireInstance, int SDA_PIN, int SCL_PIN, int width, int height, int address){
 	wire = wireInstance;
     wire->setSDA(SDA_PIN);
     wire->setSCL(SCL_PIN);
-}
-
-void DrawDisplay::begin(int width, int height, int address){
 	screenWidth = width;
 	screenHeight = height;
 	display = new Adafruit_SSD1306(screenWidth, screenHeight, wire, OLED_RESET);
@@ -31,7 +30,7 @@ void DrawDisplay::clearDisplay(){
 
 void DrawDisplay::drawCentreString(const String &buf)
 {
-	LOG_INFO("[Display] drawCentreString: " + buf);
+	LOG_DEBUG("[Display] drawCentreString: " + buf);
 	display->clearDisplay();
 	int16_t x1, y1;
 	uint16_t w, h;
@@ -44,7 +43,6 @@ void DrawDisplay::drawCentreString(const String &buf)
 }
 
 void DrawDisplay::drawCentreNumber(const int Number){
-	LOG_INFO("[Display] drawCentreNumber: " + String(Number));
 	display->clearDisplay();
 
 	if(Number >= 100 || Number <= -10){

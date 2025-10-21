@@ -1,39 +1,38 @@
 #include "ExpPedal.h"
 
-ExpPedal::ExpPedal(midi::MidiInterface<midi::SerialMIDI<Adafruit_USBD_MIDI>>* midiInstance, int midiCCExp, int thresholdValue)
-  : midi(midiInstance), midiCCExpression(midiCCExp), threshold(thresholdValue){
-  previousCCValue = -1;
+ExpPedal::ExpPedal(int thresholdValue)
+  : threshold(thresholdValue){
 }
 
 void ExpPedal::begin(TwoWire* wireInstance, int sdaPin, int sclPin, uint8_t address) {
-  if (sdaPin >= 0 && sclPin >= 0) {
-    wireInstance->setSDA(sdaPin);
-    wireInstance->setSCL(sclPin);
-  }
-  wireInstance->begin();
-  mcp.begin(address, wireInstance);
-  mcp.setGain(GAIN_1X);
-  mcp.setResolution(RESOLUTION_14_BIT);
-  mcp.setMode(MODE_CONTINUOUS);
+	if (sdaPin >= 0 && sclPin >= 0) {
+		wireInstance->setSDA(sdaPin);
+		wireInstance->setSCL(sclPin);
+	}
+	wireInstance->begin();
+	mcp.begin(address, wireInstance);
+	mcp.setGain(GAIN_1X);
+	mcp.setResolution(RESOLUTION_14_BIT);
+	mcp.setMode(MODE_CONTINUOUS);
 }
 
-void ExpPedal::ChagneControlNumber(int ControlNumber){
-  midiCCExpression = ControlNumber;
+void ExpPedal::attachCallback(void (*callback)(int value)) {
+  	expPedalCallback = callback;
 }
 
 void ExpPedal::update() {
-  // Update Expression Pedal
-  if (mcp.isReady()) {
-    uint16_t rawValue = mcp.readADC();
-    int ccValue = map(rawValue, 0, 6700, 0, 128);
+	// Update Expression Pedal
+	if (mcp.isReady()) {
+		uint16_t rawValue = constrain(mcp.readADC(), 0, 6600);
+		int value = map(rawValue, 0, 6600, 0, 128);
 
-    if (abs(ccValue - previousCCValue) > threshold) {
-      sendExpressionMIDI(ccValue);
-      previousCCValue = ccValue;
-    }
-  }
+		if (abs(value - previousValue) > threshold) {
+		expPedalCallback(value);
+		previousValue = value;
+		}
+	}
 }
 
-void ExpPedal::sendExpressionMIDI(int ccValue) {
-  midi->sendControlChange(midiCCExpression, ccValue, 1); // チャンネル1で送信
+int ExpPedal::getValue() {
+	return previousValue;
 }
