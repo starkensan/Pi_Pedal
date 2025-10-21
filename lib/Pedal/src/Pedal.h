@@ -3,28 +3,26 @@
 
 #include<Arduino.h>
 #include <Adafruit_TinyUSB.h>
-#include <MIDI.h>
+#include <DebugLog.h>
 
 class Pedal{
-  public:
-    Pedal(midi::MidiInterface<midi::SerialMIDI<Adafruit_USBD_MIDI>>* midiInstance, const int* pins, const int* PedalControlNumbers, int SwitchesNumber, unsigned long debounceDelay = 50);
-    ~Pedal();
+	public:
+		Pedal(const int pin, unsigned long debounceDelay = 50);
 
-    void begin();
-    void update();
+		void begin(bool isPullup = false);
+		void attachCallback(void (*callback)(bool state));
+		void update();
+		bool getState();
+		int getPin();
 
-  private:
-    midi::MidiInterface<midi::SerialMIDI<Adafruit_USBD_MIDI>>* midi;
-    const int* pins;
-    const int* controlNumbers;
-    int numSwitches;
-    int* currentStates;
-    int* previousStates;
-    unsigned long* lastChangeTimes; // 最後に状態が変わった時間
-    unsigned long debounceDelay;    // デバウンス時間
+	private:
+		const int pin;
+		int currentState;
+		int previousState;
+		unsigned long lastChangeTime; // 最後に状態が変わった時間
+		unsigned long debounceDelay;    // デバウンス時間
 
-    void sendSwitchesMIDI(int switchIndex, int state);
-
+		void (*pedalCallback)(bool) = nullptr;
 };
 
 #endif

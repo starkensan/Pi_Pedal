@@ -26,8 +26,6 @@ Pin Configuration
 
 #define WS2812_PIN 16
 
-const int PEDAL_PIN[] = {PEDAL1_PIN, PEDAL2_PIN, PEDAL3_PIN, PEDAL4_PIN, PEDAL5_PIN, PEDAL6_PIN};
-
 /*
 Other Configuration
 */

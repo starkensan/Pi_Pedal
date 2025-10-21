@@ -1,47 +1,42 @@
 #include "Pedal.h"
 
 // コンストラクタ
-Pedal::Pedal(midi::MidiInterface<midi::SerialMIDI<Adafruit_USBD_MIDI>>* midiInstance, const int* pins, const int* PedalControlNumbers, int SwitchesNumber, unsigned long debounceDelay) 
-    : midi(midiInstance), pins(pins), controlNumbers(PedalControlNumbers), numSwitches(SwitchesNumber), debounceDelay(debounceDelay) {
-    
-    // スイッチの状態を保持する配列を初期化
-    currentStates = new int[numSwitches];
-    previousStates = new int[numSwitches];
-    lastChangeTimes = new unsigned long[numSwitches]; // デバウンス用の時間配列
+Pedal::Pedal(const int pin ,unsigned long debounceDelay) 
+    :pin(pin), debounceDelay(debounceDelay) {
 }
 
-Pedal::~Pedal() {
-    delete[] currentStates;
-    delete[] previousStates;
-    delete[] lastChangeTimes;
-}
-
-void Pedal::begin(){
+void Pedal::begin(bool isPullup){
   // スイッチのピンを設定し、初期状態を読み込む
-    for (int i = 0; i < numSwitches; i++) {
-        pinMode(pins[i], INPUT_PULLUP);
-        currentStates[i] = digitalRead(pins[i]);
-        previousStates[i] = currentStates[i];
-        lastChangeTimes[i] = 0; // 初期化
-    }
+    pinMode(pin, isPullup ? INPUT_PULLUP:INPUT_PULLDOWN);
+    currentState = digitalRead(pin);
+    previousState = currentState;
+    lastChangeTime = 0; // 初期化
+    LOG_INFO("Pedal on pin %d initialized. isPullup : %d", pin, isPullup);
+}
+
+void Pedal::attachCallback(void (*callback)(bool)){
+    pedalCallback = callback;
+    LOG_DEBUG("attach callback to pedal on pin %d", pin);
 }
 
 // 状態チェックとコールバックの呼び出し
 void Pedal::update() {
-    for (int i = 0; i < numSwitches; i++) {
-        int reading = digitalRead(pins[i]);
-        unsigned long currentTime = millis();
-        
-        // 状態が変わっており、かつデバウンス時間が経過している場合のみ処理
-        if (reading != previousStates[i] && (currentTime - lastChangeTimes[i] >= debounceDelay)) {
-            currentStates[i] = reading;
-            lastChangeTimes[i] = currentTime; // 状態変更時間を記録
-            sendSwitchesMIDI(i, currentStates[i]);  // コールバック呼び出し
-            previousStates[i] = currentStates[i];
-        }
+    int reading = digitalRead(pin);
+    unsigned long currentTime = millis();
+    
+    // 状態が変わっており、かつデバウンス時間が経過している場合のみ処理
+    if (reading != previousState && (currentTime - lastChangeTime >= debounceDelay)) {
+        currentState = reading;
+        lastChangeTime = currentTime; // 状態変更時間を記録
+        pedalCallback(currentState);  // コールバック呼び出し
+        previousState = currentState;
     }
 }
 
-void Pedal::sendSwitchesMIDI(int switchIndex, int state){
-  midi->sendControlChange(controlNumbers[switchIndex], state ? 0 : 127, 1);
+int Pedal::getPin(){
+    return pin;
+}
+
+bool Pedal::getState(){
+    return currentState;
 }
