@@ -44,7 +44,7 @@ void RotaryEncoder::checkEncoder() {
 
   if (changeFlag == true) {
     changeFlag = false;
-    _rotaryCallback();
+    _rotaryCallback(_direction, _count);
   }
 }
 
@@ -73,7 +73,7 @@ void RotaryEncoder::checkSwitch(){
   
 }
 
-void RotaryEncoder::attachRotaryCallback(void (*rotaryCallback)()) {
+void RotaryEncoder::attachRotaryCallback(void (*rotaryCallback)(int, int)) {
   _rotaryCallback = rotaryCallback;
 }
 

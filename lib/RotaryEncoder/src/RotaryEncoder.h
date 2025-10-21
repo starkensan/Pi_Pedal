@@ -5,8 +5,8 @@
 
 class RotaryEncoder{
 	public:
-		RotaryEncoder(int DT, int CLK, int SW, int RotaryDebounceTime, int SwitchDebounceTime);
-		void attachRotaryCallback(void (*rotaryCallback)());
+		RotaryEncoder(int DT, int CLK, int SW, int RotaryDebounceTime=1000, int SwitchDebounceTime=100);
+		void attachRotaryCallback(void (*rotaryCallback)(int direction, int count));
 		void attachSwitchCallback(void (*swCallback)());
 		void checkEncoder();
 		void checkSwitch();
@@ -16,7 +16,7 @@ class RotaryEncoder{
 		void clearCount();
 
 	private:
-		void (*_rotaryCallback)();
+		void (*_rotaryCallback)(int, int);
 		void (*_swCallback)();
 		int _count=0;
 		int _direction=0;

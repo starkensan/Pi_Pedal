@@ -7,17 +7,68 @@
 static RotaryEncoder *g_re = nullptr;
 
 // ------- ユーティリティ --------
-bool valueChanged = false;
-bool expectedValue = false;
+bool reChanged = false;
+int expectedDirection = 0;
+bool swChanged = false;
 
-void callback(bool state){
 
+void reCallback(int direction, int count){
+    reChanged = true;
+    expectedDirection = direction;
+}
+
+void swCallback(){
+    swChanged = true;
 }
 
 // ------- テスト本体 --------
 
-void test_pin_number() {
-    TEST_ASSERT_EQUAL(PEDAL6_PIN, g_pedal->getPin());
+void test_rotary_encoder_check_clockwise() {
+    TEST_MESSAGE("Please rotate the encoder clockwise.");
+
+    g_re->attachRotaryCallback(reCallback);
+
+    unsigned long startTime = millis();
+    while (millis() - startTime < 10000) { // 最大10秒待つ
+        g_re->checkEncoder();
+        if (reChanged && expectedDirection == 1) { // 時計回りに回したら
+            TEST_PASS_MESSAGE("rotary encoder clockwise test completed without error");
+            reChanged = false; // フラグリセット
+        }
+    }
+    TEST_FAIL_MESSAGE("Rotary encoder was not turned clockwise within the time limit.");
+}
+
+void test_rotary_encoder_check_counterclockwise() {
+    TEST_MESSAGE("Please rotate the encoder counter-clockwise.");
+
+    g_re->attachRotaryCallback(reCallback);
+
+    unsigned long startTime = millis();
+    while (millis() - startTime < 10000) { // 最大10秒待つ
+        g_re->checkEncoder();
+        if (reChanged && expectedDirection == -1) { // 反時計回りに回したら
+            TEST_PASS_MESSAGE("rotary encoder counter-clockwise test completed without error");
+            return;
+        }
+    }
+    TEST_FAIL_MESSAGE("Rotary encoder was not turned counter-clockwise within the time limit.");
+}
+
+void test_switch_check() {
+    TEST_MESSAGE("Please press the encoder switch.");
+
+    g_re->attachSwitchCallback(swCallback);
+
+    unsigned long startTime = millis();
+    while (millis() - startTime < 10000) { // 最大10秒待つ
+        g_re->checkSwitch();
+        if (swChanged) { // スイッチが押されたら
+            TEST_PASS_MESSAGE("switch press test completed without error");
+            return;
+        }
+    }
+    TEST_FAIL_MESSAGE("Encoder switch was not pressed within the time limit.");
 }
 
 
@@ -40,18 +91,12 @@ void setup() {
 
     // テスト対象の生成＆初期化
     static RotaryEncoder re(DT_PIN, CLK_PIN, RE_SW_PIN);
-    g_pedal = &pedal;
-
-    g_pedal->begin();
-    g_pedal->attachCallback([](bool state){
-        TEST_MESSAGE("Pedal state changed: ");
-        TEST_MESSAGE(state ? "Released" : "Pressed");
-    });
+    g_re = &re;
 
     // ---- テスト実行 ----
-    RUN_TEST(test_pin_number);
-    //RUN_TEST(test_push_pedal_once);
-    //RUN_TEST(test_push_pedal_multiple_times);
+    //RUN_TEST(test_rotary_encoder_check_clockwise);
+    //RUN_TEST(test_rotary_encoder_check_counterclockwise);
+    //RUN_TEST(test_switch_check);
 
     UNITY_END();
 }
