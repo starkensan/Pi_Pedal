@@ -2,7 +2,6 @@
 #define RotaryEncoder_h
 
 #include<Arduino.h>
-#include <sys/types.h>
 
 class RotaryEncoder{
 	public:
