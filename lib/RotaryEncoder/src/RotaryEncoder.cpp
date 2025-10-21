@@ -1,4 +1,4 @@
-#include "RotaryEncoder.h"
+#include "RotaryEncoder.hpp"
 
 RotaryEncoder::RotaryEncoder(int DT, int CLK, int SW, int RotaryDebounceTime, int SwitchDebounceTime) {
   _ROTARYDEBOUNCE = RotaryDebounceTime;

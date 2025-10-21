@@ -1,4 +1,4 @@
-#include "ExpPedal.h"
+#include "ExpPedal.hpp"
 
 ExpPedal::ExpPedal(int thresholdValue)
   : threshold(thresholdValue){

@@ -1,7 +1,7 @@
 // test/test_display/test_main.cpp
 #include <Arduino.h>
 #include <unity.h>
-#include <RotaryEncoder.h>
+#include <RotaryEncoder.hpp>
 #include <config.h>
 
 static RotaryEncoder *g_re = nullptr;

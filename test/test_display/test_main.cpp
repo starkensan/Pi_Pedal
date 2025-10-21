@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <unity.h>
-#include <DrawDisplay.h>
+#include <DrawDisplay.hpp>
 #include <config.h>
 #include <Wire.h>
 
