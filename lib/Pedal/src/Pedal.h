@@ -2,7 +2,6 @@
 #define Pedal_h
 
 #include<Arduino.h>
-#include <Adafruit_TinyUSB.h>
 #include <DebugLog.h>
 
 class Pedal{
