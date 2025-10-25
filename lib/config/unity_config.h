@@ -1,5 +1,3 @@
-// include/unity_config.h
-#ifndef UNITY_CONFIG_H
-#define UNITY_CONFIG_H
+// lib/config/unity_config.h
+#pragma once
 
-#endif // UNITY_CONFIG_H

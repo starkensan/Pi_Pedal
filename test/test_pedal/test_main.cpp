@@ -1,4 +1,3 @@
-// test/test_display/test_main.cpp
 #include <Arduino.h>
 #include <unity.h>
 #include <Pedal.h>
