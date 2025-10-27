@@ -4,9 +4,9 @@
 #include <Arduino.h>
 #include <EEPROM.h>
 #include <DebugLog.h>
-#include <HalEepromStorage.hpp>
+#include <HalStorage.hpp>
 
-class EepromStorage : public HalEepromStorage {
+class EepromStorage : public HalStorage {
 public:
     EepromStorage() : _size(0) {}
 

@@ -1,14 +1,14 @@
-#ifndef HAL_EEPROM_STORAGE_HPP
-#define HAL_EEPROM_STORAGE_HPP
+#ifndef HAL_STORAGE_HPP
+#define HAL_STORAGE_HPP
 
 #include <Arduino.h>
 
 /**
  * @brief EEPROM互換のストレージ操作を抽象化するインターフェイス
  */
-class HalEepromStorage {
+class HalStorage {
 public:
-    virtual ~HalEepromStorage() {}
+    virtual ~HalStorage() {}
 
     /**
      * @brief ストレージの初期化
@@ -49,4 +49,4 @@ public:
     virtual void clear() = 0;
 };
 
-#endif // IEEPROM_STORAGE_HPP
+#endif // HAL_STORAGE_HPP
