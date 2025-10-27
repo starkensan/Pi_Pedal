@@ -1,4 +1,4 @@
-#include "Pedal.h"
+#include "Pedal.hpp"
 
 // コンストラクタ
 Pedal::Pedal(const int pin ,unsigned long debounceDelay) 

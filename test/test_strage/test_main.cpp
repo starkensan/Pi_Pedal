@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include <unity.h>
-#include <EepromStrage.h>
+#include <EepromStorage.hpp>
 #include <config.h>
 
-EepromStrage *g_es = nullptr;
+EepromStorage *g_es = nullptr;
 
 // ------- ユーティリティ --------
 
@@ -65,7 +65,7 @@ void setup() {
     UNITY_BEGIN();
 
     // テスト対象の生成＆初期化
-    static EepromStrage es;
+    static EepromStorage es;
     g_es = &es;
     
     // ---- テスト実行 ----

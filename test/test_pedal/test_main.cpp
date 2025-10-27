@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <unity.h>
-#include <Pedal.h>
+#include <Pedal.hpp>
 #include <config.h>
 
 Pedal *g_pedal = nullptr;

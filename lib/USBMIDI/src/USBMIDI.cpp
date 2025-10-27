@@ -1,4 +1,4 @@
-#include "USBMIDI.h"
+#include "USBMIDI.hpp"
 
 USBMIDI::USBMIDI()
     : usb_midi()                           // デフォルト構築

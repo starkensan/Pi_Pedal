@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <unity.h>
-#include <USBMIDI.h>
+#include <USBMIDI.hpp>
 #include <config.h>
 
 USBMIDI *g_um = nullptr;

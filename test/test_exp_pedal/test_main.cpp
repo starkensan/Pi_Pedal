@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <unity.h>
-#include <ExpPedal.h>
+#include <ExpPedal.hpp>
 #include <config.h>
 #include <Wire.h>
 
