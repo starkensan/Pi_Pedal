@@ -8,8 +8,9 @@ Pedal *g_pedal = nullptr;
 // ------- ユーティリティ --------
 bool stateChanged = false;
 bool expectedState = false;
+int pins[MAX_PEDALS-1] = {PEDAL1_PIN, PEDAL2_PIN, PEDAL3_PIN, PEDAL4_PIN, PEDAL5_PIN, PEDAL6_PIN};
 
-void callback(bool state){
+void callback(int PedalNum, bool state){
     TEST_MESSAGE("Pedal state changed: ");
     TEST_MESSAGE(state ? "Released" : "Pressed");
     if (state != expectedState) {
@@ -21,7 +22,7 @@ void callback(bool state){
 // ------- テスト本体 --------
 
 void test_pin_number() {
-    TEST_ASSERT_EQUAL(PEDAL6_PIN, g_pedal->getPin());
+    TEST_ASSERT_EQUAL(PEDAL6_PIN, g_pedal->getPin(6 - 1));
 }
 
 void test_push_pedal_once() {
@@ -83,11 +84,11 @@ void setup() {
     UNITY_BEGIN();
 
     // テスト対象の生成＆初期化
-    static Pedal pedal(PEDAL6_PIN);
+    static Pedal pedal;
     g_pedal = &pedal;
 
-    g_pedal->begin();
-    g_pedal->attachCallback([](bool state){
+    g_pedal->begin(pins);
+    g_pedal->attachCallback([](int PedalNum, bool state){
         TEST_MESSAGE("Pedal state changed: ");
         TEST_MESSAGE(state ? "Released" : "Pressed");
     });
