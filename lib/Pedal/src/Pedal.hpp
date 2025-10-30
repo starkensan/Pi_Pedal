@@ -4,25 +4,26 @@
 #include <Arduino.h>
 #include <DebugLog.h>
 #include <HalPedal.hpp>
+#include <config.h>
 
 class Pedal : public HalPedal {
 public:
-    Pedal(const int pin, unsigned long debounceDelay = 50);
+    Pedal(unsigned long debounceDelay = 50);
 
-    void begin(bool isPullup = false) override;
-    void attachCallback(void (*callback)(bool state)) override;
+    void begin(const int (&pins)[MAX_PEDALS-1], bool isPullup = false) override;
+    void attachCallback(void (*callback)(int PedalNum, bool state)) override;
     void update() override;
-    bool getState() override;
-    int getPin() override;
+    bool getState(int PedalNum) override;
+    int getPin(int PedalNum) override;
 
 private:
-    const int pin;
-    int currentState;
-    int previousState;
-    unsigned long lastChangeTime; // 最後に状態が変わった時間
+    int (pins_)[MAX_PEDALS-1];
+    int currentState[MAX_PEDALS-1];
+    int previousState[MAX_PEDALS-1];
+    unsigned long lastChangeTime[MAX_PEDALS-1]; // 最後に状態が変わった時間
     unsigned long debounceDelay;  // デバウンス時間
 
-    void (*pedalCallback)(bool) = nullptr;
+    void (*pedalCallback)(int, bool) = nullptr;
 };
 
 #endif // PEDAL_HPP
