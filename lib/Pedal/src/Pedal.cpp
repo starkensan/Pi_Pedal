@@ -15,12 +15,12 @@ void Pedal::begin(const int (&pins)[MAX_PEDALS-1], bool isPullup){
 		currentState[i] = digitalRead(pins_[i]) ^ isPullup_;
 		lastChangeTime[i] = 0; // 初期化
 	}
-	LOG_INFO("[Pedal] Pedal on pin initialized. isPullup : %d", isPullup);
+	LOG_INFO("[Pedal] Pedal initialized. isPullup : ", isPullup);
 }
 
 void Pedal::attachCallback(void (*callback)(int, bool)){
     pedalCallback = callback;
-    LOG_DEBUG("[Pedal] Attach callback to pedal");
+	LOG_INFO("[Pedal] Attached callback");
 }
 
 // 状態チェックとコールバックの呼び出し
@@ -39,10 +39,10 @@ void Pedal::update() {
 	}
 }
 
-int Pedal::getPin(int PedalNum){
-    return pins_[PedalNum];
+int Pedal::getPin(int index){
+    return pins_[index];
 }
 
-bool Pedal::getState(int PedalNum){
-    return currentState[PedalNum] == HIGH;
+bool Pedal::getState(int index){
+    return currentState[index] == HIGH;
 }

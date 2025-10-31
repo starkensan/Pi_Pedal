@@ -2,6 +2,7 @@
 #define ExpPedal_h
 
 #include <Arduino.h>
+#include <DebugLog.h>
 #include <Wire.h>
 #include <Adafruit_MCP3421.h>
 
