@@ -14,6 +14,8 @@ void ExpPedal::begin(TwoWire* wireInstance, int sdaPin, int sclPin, uint8_t addr
 	mcp.setGain(GAIN_1X);
 	mcp.setResolution(RESOLUTION_14_BIT);
 	mcp.setMode(MODE_CONTINUOUS);
+
+	LOG_INFO("[ExpPedal] ExpPedal initialized.");
 }
 
 void ExpPedal::attachCallback(void (*callback)(int value)) {

@@ -2,6 +2,7 @@
 #define SETTINGCONTROLLER_SRC_SETTINGSMANAGER_HPP_
 #include <stdint.h>
 #include <string.h>
+#include <DebugLog.h>
 #include <HalStorage.hpp>
 #include <config.h>
 

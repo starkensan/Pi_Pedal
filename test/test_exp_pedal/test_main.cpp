@@ -99,8 +99,8 @@ void setup() {
 
     // ---- テスト実行 ----
     RUN_TEST(test_exp_pedal_instance);
-    //RUN_TEST(test_exp_pedal_min);
-    //RUN_TEST(test_exp_pedal_max);
+    RUN_TEST(test_exp_pedal_min);
+    RUN_TEST(test_exp_pedal_max);
 
     UNITY_END();
 }
