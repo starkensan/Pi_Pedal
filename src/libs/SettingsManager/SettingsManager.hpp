@@ -9,9 +9,10 @@ class SettingsManager {
 public:
     // ==== ペダルの動作モード (何を送るか) ====
     enum class PedalMode : uint8_t {
-        CC = 0,       // Send Control Change
-        PC_NEXT = 1,  // Program Change: next preset
-        PC_BACK = 2   // Program Change: previous preset
+        NONE = 0,     // 
+        CC = 1,       // Send Control Change
+        PC_NEXT = 2,  // Program Change: next preset
+        PC_BACK = 3   // Program Change: previous preset
     };
 
     // ==== スイッチの押し方の意味 (どう送るか) ====
@@ -34,7 +35,6 @@ public:
     struct Settings {
         uint8_t version;                        // 互換性管理
         PedalSettings pedal[MAX_PEDALS];        // ペダルごとの設定
-        uint16_t crc;                           // 整合性チェック
     };
 
 public:
@@ -79,10 +79,11 @@ public:
      */
     bool commitSettings();
 
+    void loadFactoryDefaults();  // デフォルト設定をRAM+EEPROMへ
+
 private:
     bool loadFromStorage();      // EEPROM -> RAM
     bool writeToStorage();       // RAM -> EEPROM
-    void loadFactoryDefaults();  // デフォルト設定をRAM+EEPROMへ
     static uint16_t calcCrc(const Settings& s);
 
 private:
@@ -95,7 +96,7 @@ private:
     static constexpr size_t kRequiredStorageSize = sizeof(Settings);
 
     // <<<<<< ここ変更: versionを2に上げた >>>>>>
-    static constexpr uint8_t kCurrentVersion    = 1;
+    static constexpr uint8_t kCurrentVersion    = 2;
 };
 
 #endif // SETTINGCONTROLLER_SRC_SETTINGSMANAGER_HPP_
