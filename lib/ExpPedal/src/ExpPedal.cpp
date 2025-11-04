@@ -27,8 +27,11 @@ void ExpPedal::update() {
 		int value = map(rawValue, 0, 6600, 0, 128);
 
 		if (abs(value - previousValue) > threshold) {
-		expPedalCallback(value);
-		previousValue = value;
+			expPedalCallback(value);
+			previousValue = value;
+			LOG_DEBUG("[ExpPedal] Changed value: ", value);	
+		}else{
+			LOG_DEBUG("[ExpPedal] Update");
 		}
 	}
 }
