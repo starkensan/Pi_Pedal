@@ -12,7 +12,7 @@ public:
      * @brief 初期化処理
      * @param isPullup プルアップ入力を使うかどうか
      */
-    virtual void begin(const int (&pins)[MAX_PEDALS-1],bool isPullup = false) = 0;
+    virtual void begin(const int (&pins)[MAX_PEDALS-1],bool isPullup = true) = 0;
 
     /**
      * @brief 状態変化時に呼ばれるコールバックを登録

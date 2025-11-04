@@ -4,8 +4,8 @@ PedalsController* PedalsController::self = nullptr;
 
 void PedalsController::begin(String DeviceName) {
      // 1) 設定ロード（EEPROM -> RAM）
-    settings_->begin();
-    settings_->loadFactoryDefaults();
+    //settings_->begin();
+    delay(1000);
 
     // 2) USB MIDI 初期化
     usbMIDI_.begin(DeviceName);
@@ -44,27 +44,13 @@ void PedalsController::update() {
 void PedalsController::pedalsCallback(int index, bool state) {
     if (index < 0 || index >= MAX_PEDALS-1) return;
 
-    if (settings_->getPedalSettings(index).pedalMode != SettingsManager::PedalMode::CC) {
-        //TODO CC以外のモードは未実装
-    }else{
-        // CCモードの場合の処理
-        if (settings_->getPedalSettings(index).switchBehavior == SettingsManager::SwitchBehavior::TOGGLE) {
-            // トグル動作の場合、状態を反転させる
-            if(state)CCPedalState_[index] = !CCPedalState_[index];
-            usbMIDI_.sendControlChange(
-                settings_->getPedalSettings(index).midiChannel,
-                settings_->getPedalSettings(index).ccNumber,
-                CCPedalState_[index] ? 127 : 0
-            );
-        }else{
-            // モーメンタリ動作の場合、そのまま送信
-            usbMIDI_.sendControlChange(
-                settings_->getPedalSettings(index).midiChannel,
-                settings_->getPedalSettings(index).ccNumber,
-                state ? 127 : 0
-            );
-        }
-    }
+    // CCモードの場合の処理
+    // モーメンタリ動作の場合、そのまま送信
+    usbMIDI_.sendControlChange(
+        1,
+        index+1,
+        state ? 127 : 0
+    );
 }
 void PedalsController::expPedalCallback(int value) {
     // エクスプレッションペダルの値に基づいてMIDI CCを送信
@@ -72,9 +58,9 @@ void PedalsController::expPedalCallback(int value) {
     if (value > 127) value = 127;
 
     usbMIDI_.sendControlChange(
-        settings_->getPedalSettings(MAX_PEDALS).midiChannel,          // チャンネル1固定（将来拡張の余地あり）
-        settings_->getPedalSettings(MAX_PEDALS).ccNumber,         // CC番号11固定（将来拡張の余地あり）
-        value       // ペダルの値
+        1,        
+        7,         
+        value      
     );
 }
 

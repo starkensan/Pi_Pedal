@@ -15,7 +15,6 @@ static uint16_t simple_crc16(const uint8_t* data, size_t len) {
 // -------------------------------------------------
 // EEPROM -> RAM
 bool SettingsManager::loadFromStorage() {
-    LOG_DEBUG("[Settings] Load from storage");
     Settings tmp;
     storage_.get(kStorageAddr, &tmp, sizeof(Settings));
 
@@ -61,8 +60,6 @@ void SettingsManager::loadFactoryDefaults() {
     storage_.commit();
 
     dirty_ = false;
-
-    LOG_DEBUG("[Settings] Load factory defaults");
 }
 
 // -------------------------------------------------

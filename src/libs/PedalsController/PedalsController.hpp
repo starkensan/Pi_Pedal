@@ -1,6 +1,7 @@
 #ifndef PEDALS_CONTROLLER_HPP
 #define PEDALS_CONTROLLER_HPP
 #include <stdint.h>
+#include <DebugLog.h>
 #include <HalPedal.hpp>
 #include <HalExpPedal.hpp>
 #include <HalUSBMIDI.hpp>
