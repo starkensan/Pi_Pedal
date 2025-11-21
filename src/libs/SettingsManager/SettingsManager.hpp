@@ -34,7 +34,6 @@ public:
     struct Settings {
         uint8_t version;                        // 互換性管理
         PedalSettings pedal[MAX_PEDALS];        // ペダルごとの設定
-        uint16_t crc;                           // 整合性チェック
     };
 
 public:
@@ -42,9 +41,7 @@ public:
     : storage_(storage)
     , initialized_(false)
     , dirty_(false)
-    {
-        ::memset(&ramSettings_, 0, sizeof(ramSettings_));
-    }
+    {}
 
     /**
      * @brief 管理の初期化
@@ -95,7 +92,7 @@ private:
     static constexpr size_t kRequiredStorageSize = sizeof(Settings);
 
     // <<<<<< ここ変更: versionを2に上げた >>>>>>
-    static constexpr uint8_t kCurrentVersion    = 1;
+    static constexpr uint8_t kCurrentVersion    = 4;
 };
 
 #endif // SETTINGCONTROLLER_SRC_SETTINGSMANAGER_HPP_

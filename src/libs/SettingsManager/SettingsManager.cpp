@@ -1,26 +1,6 @@
 #include "SettingsManager.hpp"
 
 // -------------------------------------------------
-// 簡易CRC16
-static uint16_t simple_crc16(const uint8_t* data, size_t len) {
-    uint16_t crc = 0xFFFF;
-    for (size_t i = 0; i < len; ++i) {
-        crc ^= data[i];
-        crc = (uint16_t)(((crc << 1) | (crc >> 15)) & 0xFFFF);
-        crc = (uint16_t)((crc + 0x1021u) & 0xFFFF);
-    }
-    return crc;
-}
-
-uint16_t SettingsManager::calcCrc(const Settings& s) {
-    // crc自体を除いて計算
-    return simple_crc16(
-        reinterpret_cast<const uint8_t*>(&s),
-        sizeof(Settings) - sizeof(s.crc)
-    );
-}
-
-// -------------------------------------------------
 // EEPROM -> RAM
 bool SettingsManager::loadFromStorage() {
     Settings tmp;
@@ -28,12 +8,6 @@ bool SettingsManager::loadFromStorage() {
 
     // バージョン不一致なら使用不可扱い
     if (tmp.version != kCurrentVersion) {
-        return false;
-    }
-
-    // CRCチェック
-    uint16_t expect = calcCrc(tmp);
-    if (tmp.crc != expect) {
         return false;
     }
 
@@ -45,8 +19,6 @@ bool SettingsManager::loadFromStorage() {
 // -------------------------------------------------
 // RAM -> EEPROM
 bool SettingsManager::writeToStorage() {
-    // CRC更新
-    ramSettings_.crc = calcCrc(ramSettings_);
 
     // EEPROMに書き込み
     storage_.put(kStorageAddr, &ramSettings_, sizeof(Settings));
@@ -61,18 +33,16 @@ bool SettingsManager::writeToStorage() {
 // -------------------------------------------------
 // デフォルト設定を作成し、EEPROMにも保存する
 void SettingsManager::loadFactoryDefaults() {
-    ::memset(&ramSettings_, 0, sizeof(ramSettings_));
     ramSettings_.version = kCurrentVersion;
 
     for (size_t i = 0; i < MAX_PEDALS; ++i) {
         ramSettings_.pedal[i].pedalMode      = PedalMode::CC;
         ramSettings_.pedal[i].midiChannel    = 1;   // MIDI Ch1
-        ramSettings_.pedal[i].ccNumber       = 11;  // 例: expression的CC
-        ramSettings_.pedal[i].switchBehavior = SwitchBehavior::TOGGLE; // デフォ:ラッチ動作
+        ramSettings_.pedal[i].ccNumber       = 1+i;  // 例: expression的CC
+        ramSettings_.pedal[i].switchBehavior = SwitchBehavior::MOMENTARY; // デフォ:ラッチ動作
         ramSettings_.pedal[i]._pad           = 0;
     }
 
-    ramSettings_.crc = calcCrc(ramSettings_);
     storage_.put(kStorageAddr, &ramSettings_, sizeof(Settings));
     storage_.commit();
 
