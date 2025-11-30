@@ -1,5 +1,5 @@
-#ifndef SETTINGCONTROLLER_SRC_SETTINGSMANAGER_HPP_
-#define SETTINGCONTROLLER_SRC_SETTINGSMANAGER_HPP_
+#ifndef SETTINGSMANAGER_HPP_
+#define SETTINGSMANAGER_HPP_
 #include <stdint.h>
 #include <string.h>
 #include <HalStorage.hpp>
@@ -79,14 +79,19 @@ public:
      */
     bool commitSettings();
 
-    void loadFactoryDefaults();  // デフォルト設定をRAM+EEPROMへ
+    /**
+     * @brief デフォルト設定をRAM+EEPROMへ反映
+     */
+    void loadFactoryDefaults();  
 
 private:
+    SettingsManager() = default;
+    SettingsManager(const SettingsManager&) = delete;
+    SettingsManager& operator=(const SettingsManager&) = delete;
+
     bool loadFromStorage();      // EEPROM -> RAM
     bool writeToStorage();       // RAM -> EEPROM
-    static uint16_t calcCrc(const Settings& s);
 
-private:
     HalStorage& storage_;
     bool initialized_;
     bool dirty_;
@@ -95,8 +100,7 @@ private:
     static constexpr int   kStorageAddr         = 0;
     static constexpr size_t kRequiredStorageSize = sizeof(Settings);
 
-    // <<<<<< ここ変更: versionを2に上げた >>>>>>
     static constexpr uint8_t kCurrentVersion    = 2;
 };
 
-#endif // SETTINGCONTROLLER_SRC_SETTINGSMANAGER_HPP_
+#endif // SETTINGSMANAGER_HPP_
