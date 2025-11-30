@@ -1,16 +1,11 @@
 #include "SettingsManager.hpp"
 
-// -------------------------------------------------
-// 簡易CRC16
-static uint16_t simple_crc16(const uint8_t* data, size_t len) {
-    uint16_t crc = 0xFFFF;
-    for (size_t i = 0; i < len; ++i) {
-        crc ^= data[i];
-        crc = (uint16_t)(((crc << 1) | (crc >> 15)) & 0xFFFF);
-        crc = (uint16_t)((crc + 0x1021u) & 0xFFFF);
-    }
-    return crc;
-}
+// local RAII
+struct LockGuard {
+  mutex_t& m;
+  LockGuard(mutex_t& m_) : m(m_) { mutex_enter_blocking(&m); }
+  ~LockGuard() { mutex_exit(&m); }
+};
 
 // -------------------------------------------------
 // EEPROM -> RAM
