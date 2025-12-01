@@ -42,9 +42,7 @@ public:
     : storage_(storage)
     , initialized_(false)
     , dirty_(false)
-    {
-        ::memset(&ramSettings_, 0, sizeof(ramSettings_));
-    }
+    {}
 
     /**
      * @brief 管理の初期化

@@ -40,14 +40,13 @@ bool SettingsManager::writeToStorage() {
 // -------------------------------------------------
 // デフォルト設定を作成し、EEPROMにも保存する
 void SettingsManager::loadFactoryDefaults() {
-    ::memset(&ramSettings_, 0, sizeof(ramSettings_));
     ramSettings_.version = kCurrentVersion;
 
     for (size_t i = 0; i < MAX_PEDALS; ++i) {
         ramSettings_.pedal[i].pedalMode      = PedalMode::CC;
         ramSettings_.pedal[i].midiChannel    = 1;   // MIDI Ch1
-        ramSettings_.pedal[i].ccNumber       = i+1;  // 例: expression的CC
-        ramSettings_.pedal[i].switchBehavior = SwitchBehavior::MOMENTARY; // デフォ:モーメンタリ動作
+        ramSettings_.pedal[i].ccNumber       = 1+i;  // 例: expression的CC
+        ramSettings_.pedal[i].switchBehavior = SwitchBehavior::MOMENTARY; // デフォ:ラッチ動作
         ramSettings_.pedal[i]._pad           = 0;
     }
 
