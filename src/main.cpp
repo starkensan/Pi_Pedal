@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <DebugLog.h>
 #include <Adafruit_TinyUSB.h>
 #include <config.h>
 
@@ -20,14 +19,7 @@ PedalsController pedals(&pedal, expPedal, usbmidi, storage);
 
 
 void setup() {
-
-    LOG_ATTACH_SERIAL(SerialTinyUSB);
-    LOG_SET_LEVEL(DebugLogLevel::LVL_INFO);
-
-    pedals.begin("PiPedals");
-
-    delay(1000);
-    
+    pedals.begin("PiPedals");    
 }
 
 void loop() {

@@ -93,8 +93,8 @@ private:
     bool writeToStorage();       // RAM -> EEPROM
 
     HalStorage& storage_;
-    bool initialized_;
-    bool dirty_;
+    bool initialized_ = false;
+    bool dirty_ = false;
     Settings ramSettings_;
 
     static constexpr int   kStorageAddr         = 0;

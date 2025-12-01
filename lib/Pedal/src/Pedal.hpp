@@ -2,7 +2,6 @@
 #define PEDAL_HPP
 
 #include <Arduino.h>
-#include <DebugLog.h>
 #include <HalPedal.hpp>
 #include <config.h>
 
