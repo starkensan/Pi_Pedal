@@ -2,7 +2,6 @@
 #define USBMIDI_HPP
 
 #include <Arduino.h>
-#include <DebugLog.h>
 #include <Adafruit_TinyUSB.h>
 #include <MIDI.h>
 #include "HalUSBMIDI.hpp"

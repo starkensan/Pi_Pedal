@@ -14,6 +14,7 @@ void ExpPedal::begin(TwoWire* wireInstance, int sdaPin, int sclPin, uint8_t addr
 	mcp.setGain(GAIN_1X);
 	mcp.setResolution(RESOLUTION_14_BIT);
 	mcp.setMode(MODE_CONTINUOUS);
+
 }
 
 void ExpPedal::attachCallback(void (*callback)(int value)) {
@@ -27,8 +28,8 @@ void ExpPedal::update() {
 		int value = map(rawValue, 0, 6600, 0, 128);
 
 		if (abs(value - previousValue) > threshold) {
-		expPedalCallback(value);
-		previousValue = value;
+			expPedalCallback(value);
+			previousValue = value;
 		}
 	}
 }

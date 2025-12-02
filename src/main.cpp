@@ -1,12 +1,26 @@
 #include <Arduino.h>
-#include <DebugLog.h>
+#include <Adafruit_TinyUSB.h>
 #include <config.h>
 
-void setup() {
-    Serial.begin(115200);
+#include <Pedal.hpp>
+#include <ExpPedal.hpp>
+#include <USBMIDI.hpp>
+#include <EepromStorage.hpp>
 
+#include <PedalsController/PedalsController.hpp>
+
+Pedal pedal;
+ExpPedal expPedal;
+USBMIDI usbmidi;
+EepromStorage storage;
+
+PedalsController pedals(pedal, expPedal, usbmidi, storage);
+
+void setup() {
+    pedals.begin("PiPedals");
+    pedals.start();
 }
 
 void loop() {
-
+    pedals.update();
 }
