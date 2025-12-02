@@ -3,7 +3,6 @@
 
 #include <Arduino.h>
 #include <EEPROM.h>
-#include <DebugLog.h>
 #include <HalStorage.hpp>
 
 class EepromStorage : public HalStorage {

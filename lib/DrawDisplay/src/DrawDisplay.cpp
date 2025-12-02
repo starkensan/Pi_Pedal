@@ -11,26 +11,21 @@ void DrawDisplay::begin(TwoWire* wireInstance, int SDA_PIN, int SCL_PIN, int wid
 	display = new Adafruit_SSD1306(screenWidth, screenHeight, wire, OLED_RESET);
 
 	if(!display->begin(SSD1306_SWITCHCAPVCC, address)) {
-		LOG_ERROR(F("[Display] allocation failed"));
 		for(;;); // Don't proceed, loop forever
 	}
 
 	display->clearDisplay();
 	display->display();
 
-	LOG_INFO(F("[Display] initialized"));
-
 }
 
 void DrawDisplay::clearDisplay(){
-	LOG_INFO(F("[Display] cleared"));
 	display->clearDisplay();
 	display->display();
 }
 
 void DrawDisplay::drawCentreString(const String &buf)
 {
-	LOG_DEBUG("[Display] drawCentreString: " + buf);
 	display->clearDisplay();
 	int16_t x1, y1;
 	uint16_t w, h;
@@ -56,8 +51,6 @@ void DrawDisplay::drawCentreNumber(const int Number){
 }
 
 void DrawDisplay::drawMenu(const String items[3], int cursorIndex, bool invertCursor, const String rightTexts[3]){
-	
-	LOG_INFO(F("[Display] drawMenu"));
 
 	display->clearDisplay();
 	display->setTextSize(2);

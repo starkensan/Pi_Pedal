@@ -42,9 +42,7 @@ public:
     : storage_(storage)
     , initialized_(false)
     , dirty_(false)
-    {
-        ::memset(&ramSettings_, 0, sizeof(ramSettings_));
-    }
+    {}
 
     /**
      * @brief 管理の初期化
@@ -54,24 +52,63 @@ public:
      */
     bool begin();
 
-    // 全設定（RAM上キャッシュ）を取得
+    /**
+     * @brief 全設定取得
+     * @return 全設定(Settings)
+    */
     const Settings& getAllSettings() const {
         return ramSettings_;
     }
 
-    // 指定ペダルの設定取得
+    /**
+     * @brief 指定ペダルの設定取得
+     * @param pedalIndex ペダルインデックス
+     * @return ペダル設定(PedalSettings)
+    */
     const PedalSettings& getPedalSettings(size_t pedalIndex) const {
         return ramSettings_.pedal[pedalIndex];
     }
 
-    // ===== Setter群 (RAMのみ更新、EEPROMはまだ) =====
-
+    /**
+     * @brief Setter群 (RAMのみ更新、EEPROMはまだ)
+     * @param pedalIndex ペダルインデックス
+     * @param mode ペダルモード(PedalMode::CC, PC_NEXT, PC_BACK)
+     */
     void setPedalMode(size_t pedalIndex, PedalMode mode);
+    
+    /**
+     * @brief MIDIチャンネル設定
+     * @param pedalIndex ペダルインデックス
+     * @param ch MIDIチャンネル(1-16)
+     */
     void setMidiChannel(size_t pedalIndex, uint8_t ch);
+
+    /**
+     * @brief CC番号設定
+     * @param pedalIndex ペダルインデックス
+     * @param cc CC番号(0-127)
+     */
     void setCCNumber(size_t pedalIndex, uint8_t cc);
+
+    /**
+     * @brief スイッチ動作設定
+     * @param pedalIndex ペダルインデックス
+     * @param behavior スイッチ動作(SwitchBehavior::MOMENTARY/TOGGLE)
+     */
     void setSwitchBehavior(size_t pedalIndex, SwitchBehavior behavior);
 
+
+    /**
+     * @brief ペダル設定一括設定
+     * @param pedalIndex ペダルインデックス
+     * @param ps ペダル設定(PedalSettings)
+     */
     void setPedalSettings(size_t pedalIndex, const PedalSettings& ps);
+
+    /**
+     * @brief 全設定一括設定
+     * @param s 全設定(Settings)
+     */
     void setAllSettings(const Settings& s);
 
     /**
@@ -100,7 +137,7 @@ private:
     static constexpr int   kStorageAddr         = 0;
     static constexpr size_t kRequiredStorageSize = sizeof(Settings);
 
-    static constexpr uint8_t kCurrentVersion    = 2;
+    static constexpr uint8_t kCurrentVersion    = 1;
 };
 
 #endif // SETTINGSMANAGER_HPP_

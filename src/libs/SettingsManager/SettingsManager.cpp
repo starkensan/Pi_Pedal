@@ -1,13 +1,12 @@
 #include "SettingsManager.hpp"
 
-// local RAII
 struct LockGuard {
   mutex_t& m;
   LockGuard(mutex_t& m_) : m(m_) { mutex_enter_blocking(&m); }
   ~LockGuard() { mutex_exit(&m); }
 };
 
-// -------------------------------------------------
+
 // EEPROM -> RAM
 bool SettingsManager::loadFromStorage() {
     Settings tmp;
@@ -23,7 +22,6 @@ bool SettingsManager::loadFromStorage() {
     return true;
 }
 
-// -------------------------------------------------
 // RAM -> EEPROM
 bool SettingsManager::writeToStorage() {
 
@@ -37,17 +35,15 @@ bool SettingsManager::writeToStorage() {
     return true;
 }
 
-// -------------------------------------------------
 // デフォルト設定を作成し、EEPROMにも保存する
 void SettingsManager::loadFactoryDefaults() {
-    ::memset(&ramSettings_, 0, sizeof(ramSettings_));
     ramSettings_.version = kCurrentVersion;
 
     for (size_t i = 0; i < MAX_PEDALS; ++i) {
         ramSettings_.pedal[i].pedalMode      = PedalMode::CC;
         ramSettings_.pedal[i].midiChannel    = 1;   // MIDI Ch1
-        ramSettings_.pedal[i].ccNumber       = i+1;  // 例: expression的CC
-        ramSettings_.pedal[i].switchBehavior = SwitchBehavior::MOMENTARY; // デフォ:モーメンタリ動作
+        ramSettings_.pedal[i].ccNumber       = 1+i;  // 例: expression的CC
+        ramSettings_.pedal[i].switchBehavior = SwitchBehavior::MOMENTARY; // デフォ:ラッチ動作
         ramSettings_.pedal[i]._pad           = 0;
     }
 
@@ -57,8 +53,9 @@ void SettingsManager::loadFactoryDefaults() {
     dirty_ = false;
 }
 
-// -------------------------------------------------
-// begin()
+/*
+@brief 管理の初期化
+*/
 bool SettingsManager::begin() {
     if (initialized_) {
         return true;
@@ -78,9 +75,12 @@ bool SettingsManager::begin() {
     return true;
 }
 
-// -------------------------------------------------
-// Setter群 (RAMだけ更新してdirty_=true)
 
+/*
+@brief Setter群 (RAMのみ更新、EEPROMはまだ)
+@param pedalIndex ペダルインデックス
+@param mode ペダルモード(PedalMode::CC/PC_NEXT/PC_BACK)
+*/
 void SettingsManager::setPedalMode(size_t pedalIndex, PedalMode mode) {
     if (pedalIndex >= MAX_PEDALS) return;
 
@@ -90,6 +90,11 @@ void SettingsManager::setPedalMode(size_t pedalIndex, PedalMode mode) {
     }
 }
 
+/*
+@brief MIDIチャンネル設定
+@param pedalIndex ペダルインデックス
+@param ch MIDIチャンネル(1-16)
+*/
 void SettingsManager::setMidiChannel(size_t pedalIndex, uint8_t ch) {
     if (pedalIndex >= MAX_PEDALS) return;
     // 必要なら1〜16にクリップとかする
@@ -99,6 +104,11 @@ void SettingsManager::setMidiChannel(size_t pedalIndex, uint8_t ch) {
     }
 }
 
+/*
+@brief CC番号設定
+@param pedalIndex ペダルインデックス
+@param cc CC番号(0-127)
+*/
 void SettingsManager::setCCNumber(size_t pedalIndex, uint8_t cc) {
     if (pedalIndex >= MAX_PEDALS) return;
 
@@ -108,6 +118,11 @@ void SettingsManager::setCCNumber(size_t pedalIndex, uint8_t cc) {
     }
 }
 
+/*
+@brief スイッチ動作設定
+@param pedalIndex ペダルインデックス
+@param behavior スイッチ動作(SwitchBehavior::MOMENTARY/TOGGLE)
+*/
 void SettingsManager::setSwitchBehavior(size_t pedalIndex, SwitchBehavior behavior) {
     if (pedalIndex >= MAX_PEDALS) return;
 
@@ -117,6 +132,11 @@ void SettingsManager::setSwitchBehavior(size_t pedalIndex, SwitchBehavior behavi
     }
 }
 
+/*
+@brief ペダル設定一括設定
+@param pedalIndex ペダルインデックス
+@param ps ペダル設定(PedalSettings)
+*/
 void SettingsManager::setPedalSettings(size_t pedalIndex, const PedalSettings& ps) {
     if (pedalIndex >= MAX_PEDALS) return;
 
@@ -144,6 +164,10 @@ void SettingsManager::setPedalSettings(size_t pedalIndex, const PedalSettings& p
     }
 }
 
+/*
+@brief 全設定一括設定
+@param s 全設定(Settings)
+*/
 void SettingsManager::setAllSettings(const Settings& s) {
     bool changed = false;
 

@@ -12,7 +12,7 @@ void USBMIDI::begin( String device_name ){
         TinyUSBDevice.begin(0);
     }
     usb_midi.setStringDescriptor(device_name.c_str());
-    midi.begin(1);
+    midi.begin(MIDI_CHANNEL_OMNI);
 
     while( !TinyUSBDevice.mounted() ) delay(1);
 

@@ -2,7 +2,6 @@
 #define PEDAL_HPP
 
 #include <Arduino.h>
-#include <DebugLog.h>
 #include <HalPedal.hpp>
 #include <config.h>
 
@@ -13,8 +12,8 @@ public:
     void begin(const int (&pins)[MAX_PEDALS-1], bool isPullup = true) override;
     void attachCallback(void (*callback)(int index, bool state)) override;
     void update() override;
-    bool getState(int PedalNum) override;
-    int getPin(int PedalNum) override;
+    bool getState(int index) override;
+    int getPin(int index) override;
 
 private:
     int (pins_)[MAX_PEDALS-1];
