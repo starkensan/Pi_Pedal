@@ -30,7 +30,7 @@ void Pedal::update() {
 		// 状態が変わっており、かつデバウンス時間が経過している場合のみ処理
 		if (reading != currentState[i] && (currentTime - lastChangeTime[i] >= debounceDelay)) {
 			currentState[i] = reading;
-			lastChangeTime[i] = currentTime; // 状態変更時間を記録\
+			lastChangeTime[i] = currentTime; // 状態変更時間を記録
 			if(pedalCallback != nullptr)pedalCallback(i, currentState[i]);  // コールバック呼び出し
 		}
 	}

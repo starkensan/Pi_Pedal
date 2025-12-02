@@ -14,12 +14,11 @@ ExpPedal expPedal;
 USBMIDI usbmidi;
 EepromStorage storage;
 
-PedalsController pedals(&pedal, expPedal, usbmidi, storage);
-
-
+PedalsController pedals(pedal, expPedal, usbmidi, storage);
 
 void setup() {
-    pedals.begin("PiPedals");    
+    pedals.begin("PiPedals");
+    pedals.start();
 }
 
 void loop() {
