@@ -14,29 +14,40 @@ public:
     PedalsController(HalPedal& pedals,
                      HalExpPedal& expPedal,
                      HalUSBMIDI& usbMIDI,
-                     HalStorage& storage)
+                     SettingsManager& settings)
     : pedals_(pedals)
     , expPedal_(expPedal)
     , usbMIDI_(usbMIDI)
-    , settings_(storage)
+    , settings_(settings)
     {
         self = this;
     }
 
-    // 初期化
+    /**
+     * @brief 初期化処理
+     * @param DeviceName USB MIDIデバイス名
+    */
     void begin(String DeviceName);
 
+    /**
+     * @brief MIDI送信開始
+     */
     void start();
 
+    /**
+     * @brief MIDI送信停止
+     */
     void stop();
 
-    // 定期処理
+    /**
+     * @brief 定期処理
+     */
     void update();
 private:
     HalPedal&    pedals_;
     HalExpPedal& expPedal_;
     HalUSBMIDI&  usbMIDI_;
-    SettingsManager settings_;
+    SettingsManager& settings_;
 
     static PedalsController* self;
 
