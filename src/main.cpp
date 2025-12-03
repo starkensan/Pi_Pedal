@@ -7,6 +7,7 @@
 #include <USBMIDI.hpp>
 #include <EepromStorage.hpp>
 
+#include <SettingsManager/SettingsManager.hpp>
 #include <PedalsController/PedalsController.hpp>
 
 Pedal pedal;
@@ -14,7 +15,9 @@ ExpPedal expPedal;
 USBMIDI usbmidi;
 EepromStorage storage;
 
-PedalsController pedals(pedal, expPedal, usbmidi, storage);
+SettingsManager settings(storage);
+
+PedalsController pedals(pedal, expPedal, usbmidi, settings);
 
 void setup() {
     pedals.begin("PiPedals");

@@ -2,23 +2,19 @@
 
 PedalsController* PedalsController::self = nullptr;
 
-/*
-@brief 初期化
-@param DeviceName USBデバイス名
-*/
 void PedalsController::begin(String DeviceName) {
-     // 1) 設定ロード（EEPROM -> RAM）
+     // 設定ロード（EEPROM -> RAM）
     settings_.begin();
 
-    // 2) USB MIDI 初期化
+    // USB MIDI 初期化
     usbMIDI_.begin(DeviceName);
     delay(1000);
 
-    // 3) フットスイッチ初期化
+    // フットスイッチ初期化
     pedals_.begin(pedalPins_);
     pedals_.attachCallback(&PedalsController::pedalsCallbackStatic);
 
-    // 4) エクスプレッションペダル初期化
+    // エクスプレッションペダル初期化
     expPedal_.begin(&MCP_I2C_INSTANCE, SDA1_PIN, SCL1_PIN);
     expPedal_.attachCallback(&PedalsController::expPedalsCallbackStatic);
 
@@ -27,19 +23,15 @@ void PedalsController::begin(String DeviceName) {
         CCPedalState_[i] = false;
     }
 }
-/*
-@brief midi送信開始
-*/
+
 void PedalsController::start() {
     midiStarted_ = true;
 }
 
-/*
-@brief midi送信停止
-*/
 void PedalsController::stop() {
     midiStarted_ = false;
 }
+
 void PedalsController::update() {
     pedals_.update();
     expPedal_.update();
@@ -55,7 +47,7 @@ void PedalsController::pedalsCallback(int index, bool state) {
         if (settings_.getPedalSettings(index).pedalMode == SettingsManager::PedalMode::CC) {
             // Control Change
             if (settings_.getPedalSettings(index).switchBehavior == SettingsManager::SwitchBehavior::TOGGLE) {
-                if (state) { // ペダルが押されたときのみトグル
+                if (state) {
                     CCPedalState_[index] = !CCPedalState_[index];
                     usbMIDI_.sendControlChange(
                         settings_.getPedalSettings(index).midiChannel,
@@ -74,7 +66,7 @@ void PedalsController::pedalsCallback(int index, bool state) {
             }
         }else if(settings_.getPedalSettings(index).pedalMode == SettingsManager::PedalMode::PC_NEXT){
             // Program Change Next
-            if(state){ // 押されたときのみ送信
+            if(state){
                 PCCurrentNumber_++;
                 if (PCCurrentNumber_ > 127) PCCurrentNumber_ = 0; // 0-127の範囲に制限
                 usbMIDI_.sendProgramChange(
@@ -84,7 +76,7 @@ void PedalsController::pedalsCallback(int index, bool state) {
             }
         }else if(settings_.getPedalSettings(index).pedalMode == SettingsManager::PedalMode::PC_BACK){
             // Program Change Back
-            if(state){ // 押されたときのみ送信
+            if(state){
                 if (PCCurrentNumber_ == 0) {
                     PCCurrentNumber_ = 127;
                 } else {
