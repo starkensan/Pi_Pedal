@@ -44,9 +44,9 @@ void PedalsController::pedalsCallback(int index, bool state) {
     }else{
         if (index < 0 || index >= MAX_PEDALS-1) return;
 
-        if (settings_.getPedalSettings(index).pedalMode == SettingsManager::PedalMode::CC) {
+        if (settings_.getPedalSettings(index).pedalMode == PedalMode::CC) {
             // Control Change
-            if (settings_.getPedalSettings(index).switchBehavior == SettingsManager::SwitchBehavior::TOGGLE) {
+            if (settings_.getPedalSettings(index).switchBehavior == SwitchBehavior::TOGGLE) {
                 if (state) {
                     CCPedalState_[index] = !CCPedalState_[index];
                     usbMIDI_.sendControlChange(
@@ -56,7 +56,7 @@ void PedalsController::pedalsCallback(int index, bool state) {
                     );
                 }
                 return;
-            }else if(settings_.getPedalSettings(index).switchBehavior == SettingsManager::SwitchBehavior::MOMENTARY){
+            }else if(settings_.getPedalSettings(index).switchBehavior == SwitchBehavior::MOMENTARY){
                 // モーメンタリ動作の場合、そのまま送信
                 usbMIDI_.sendControlChange(
                     settings_.getPedalSettings(index).midiChannel,
@@ -64,7 +64,7 @@ void PedalsController::pedalsCallback(int index, bool state) {
                     state ? 127 : 0
                 );
             }
-        }else if(settings_.getPedalSettings(index).pedalMode == SettingsManager::PedalMode::PC_NEXT){
+        }else if(settings_.getPedalSettings(index).pedalMode == PedalMode::PC_NEXT){
             // Program Change Next
             if(state){
                 PCCurrentNumber_++;
@@ -74,7 +74,7 @@ void PedalsController::pedalsCallback(int index, bool state) {
                     PCCurrentNumber_
                 );
             }
-        }else if(settings_.getPedalSettings(index).pedalMode == SettingsManager::PedalMode::PC_BACK){
+        }else if(settings_.getPedalSettings(index).pedalMode == PedalMode::PC_BACK){
             // Program Change Back
             if(state){
                 if (PCCurrentNumber_ == 0) {

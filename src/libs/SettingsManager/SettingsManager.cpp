@@ -25,12 +25,12 @@ bool SettingsManager::begin() {
     return true;
 }
 
-const SettingsManager::Settings& SettingsManager::getAllSettings() const {
+const Settings& SettingsManager::getAllSettings() const {
 LockGuard lock(mtx_);
 return ramSettings_;
 }
 
-const SettingsManager::PedalSettings& SettingsManager::getPedalSettings(size_t pedalIndex) const {
+const PedalSettings& SettingsManager::getPedalSettings(size_t pedalIndex) const {
     LockGuard lock(mtx_);
     return ramSettings_.pedal[pedalIndex];
 }
@@ -158,6 +158,18 @@ bool SettingsManager::commitSettings() {
     }
     return ok;
 }
+
+void SettingsManager::uncommitSettings() {
+    LockGuard lock(mtx_);
+    if (initialized_ == false || dirty_ == false) {
+        return;
+    }
+    if (!loadFromStorage()) {
+        loadFactoryDefaults();
+    } 
+    dirty_ = false;
+    return;
+}   
 
 //------------------
 // Private methods
