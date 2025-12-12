@@ -70,48 +70,16 @@ namespace MenuState {
         static_cast<uint8_t>(sizeof(ExpPedalCalibrationMenuItems) / sizeof(ExpPedalCalibrationMenuItems[0])),
         MenuID::EXP_PEDAL_SETTINGS
     };
-
     // Pedal Assignment Menu Items
-    char* PedalMidiModeLabels[] = {
-        (char*)"CC",
-        (char*)"PC NEXT",
-        (char*)"PC BACK"
-    };
-    char* SwitchLabels[] = {
-        (char*)"MOMENTARY",
-        (char*)"TOGGLE"
-    };
-
-    ValueConfig PedalMidiModeValueConfig = {
-        .valuePtr = nullptr,
-        .isLabelled = true,
-        .labels = PedalMidiModeLabels
-    };
-    ValueConfig PedalMidiChValueConfig = {
-        .valuePtr = nullptr,
-        .isLabelled = false,
-        .labels = nullptr
-    };
-    ValueConfig PedalCCNumValueConfig = {
-        .valuePtr = nullptr,
-        .isLabelled = false,
-        .labels = nullptr
-    };
-    ValueConfig PedalSwitchValueConfig = {
-        .valuePtr = nullptr,
-        .isLabelled = true,
-        .labels = SwitchLabels
-    };
-    // Pedal Assignment Menu Items
-    MenuItem PedalAssignmentMenuItems[] = {
-        {"Mode", MenuType::VALUE_CHANGE, .actionParam = {.value = PedalMidiModeValueConfig}, 0},
-        {"Midi Ch", MenuType::VALUE_CHANGE, .actionParam = {.value = PedalMidiChValueConfig}, 0},
-        {"CC Num", MenuType::VALUE_CHANGE, .actionParam = {.value = PedalCCNumValueConfig}, 0},
-        {"Switch", MenuType::VALUE_CHANGE, .actionParam = {.value = PedalSwitchValueConfig}, 0},
+    const MenuItem PedalAssignmentMenuItems[] = {
+        {"Mode", MenuType::VALUE_CHANGE, .actionParam = {.paramID = ParamID::PARAM_PEDAL_MIDI_MODE}, 0},
+        {"Midi Ch", MenuType::VALUE_CHANGE, .actionParam = {.paramID = ParamID::PARAM_PEDAL_MIDI_CHANNEL}, 0},
+        {"CC Num", MenuType::VALUE_CHANGE, .actionParam = {.paramID = ParamID::PARAM_PEDAL_CC_NUMBER}, 0},
+        {"Switch", MenuType::VALUE_CHANGE, .actionParam = {.paramID = ParamID::PARAM_PEDAL_SWITCH_MODE}, 0},
         {"Save", MenuType::SAVE, .actionParam = {}, 0},
         {"Exit", MenuType::EXIT, .actionParam = {}, 0}
     };
-    MenuConfig PedalAssignmentMenuConfig = {
+    const MenuConfig PedalAssignmentMenuConfig = {
         MenuID::PEDAL_ASSIGNMENT,
         "Pedal Assignment",
         PedalAssignmentMenuItems,
@@ -120,22 +88,12 @@ namespace MenuState {
     };
 
     // Exp Pedal Assignment Menu Items
-    ValueConfig ExpPedalMidiChValueConfig = {
-        .valuePtr = nullptr,
-        .isLabelled = false,
-        .labels = nullptr
-    };
-    ValueConfig ExpPedalCCNumValueConfig = {
-        .valuePtr = nullptr,
-        .isLabelled = false,
-        .labels = nullptr
-    };
-    MenuItem ExpPedalAssignmentMenuItems[] = {
-        {"Midi Ch", MenuType::VALUE_CHANGE, .actionParam = {.value = ExpPedalMidiChValueConfig}, 0},
-        {"CC Num", MenuType::VALUE_CHANGE, .actionParam = {.value = ExpPedalCCNumValueConfig}, 0},
+    const MenuItem ExpPedalAssignmentMenuItems[] = {
+        {"Midi Ch", MenuType::VALUE_CHANGE, .actionParam = {.paramID = ParamID::PARAM_EXP_PEDAL_MIDI_CHANNEL}, 0},
+        {"CC Num", MenuType::VALUE_CHANGE, .actionParam = {.paramID = ParamID::PARAM_EXP_PEDAL_CC_NUMBER}, 0},
         {"Exit", MenuType::EXIT, .actionParam = {}, 0}
     };
-    MenuConfig ExpPedalAssignmentMenuConfig = {
+    const MenuConfig ExpPedalAssignmentMenuConfig = {
         MenuID::EXP_PEDAL_ASSIGNMENT,
         "Exp Pedal Assign",
         ExpPedalAssignmentMenuItems,
@@ -143,24 +101,90 @@ namespace MenuState {
         MenuID::EXP_PEDAL_SETTINGS
     };
 
-    ValueConfig BrigthnessValueConfig = {
-        .valuePtr = nullptr,
-        .isLabelled = false,
-        .labels = nullptr
-    };
-
     // Display Settings Menu Items
-    MenuItem DisplaySettingsMenuItems[] = {
-        {"Brightness", MenuType::VALUE_CHANGE, .actionParam = {.value = BrigthnessValueConfig}, 0},
+    const MenuItem DisplaySettingsMenuItems[] = {
+        {"Brightness", MenuType::VALUE_CHANGE, .actionParam = {.paramID = ParamID::PARAM_BRIGHTNESS}, 0},
         {"Exit", MenuType::EXIT, .actionParam = {}, 0}
     };
-    MenuConfig DisplaySettingsMenuConfig = {
+    const MenuConfig DisplaySettingsMenuConfig = {
         MenuID::DISPLAY_SETTINGS,
         "Display Settings",
         DisplaySettingsMenuItems,
         static_cast<uint8_t>(sizeof(DisplaySettingsMenuItems) / sizeof(DisplaySettingsMenuItems[0])),
         MenuID::SETTINGS
     };
+
+    // Pedal Assignment Menu Items
+    const char* PedalMidiModeLabels[] = {
+        (char*)"CC",
+        (char*)"PC NEXT",
+        (char*)"PC BACK"
+    };
+    const char* SwitchLabels[] = {
+        (char*)"MOMENTARY",
+        (char*)"TOGGLE"
+    };
+
+    // ParamConfig 実体
+
+    ParamConfig PedalMidiModeParamConfig = {
+        .paramID = ParamID::PARAM_PEDAL_MIDI_MODE,
+        .value = 0,
+        .labelCount = static_cast<int>(sizeof(PedalMidiModeLabels) / sizeof(PedalMidiModeLabels[0])),
+        .labels = PedalMidiModeLabels
+    };
+    ParamConfig PedalMidiChParamConfig = {
+        .paramID = ParamID::PARAM_PEDAL_MIDI_CHANNEL,
+        .value = 0,
+        .labelCount = 0,
+        .labels = nullptr
+    };
+    ParamConfig PedalCCNumParamConfig = {
+        .paramID = ParamID::PARAM_PEDAL_CC_NUMBER,
+        .value = 0,
+        .labelCount = 0,
+        .labels = nullptr
+    };
+    ParamConfig PedalSwitchParamConfig = {
+        .paramID = ParamID::PARAM_PEDAL_SWITCH_MODE,
+        .value = 0,
+        .labelCount = static_cast<int>(sizeof(SwitchLabels) / sizeof(SwitchLabels[0])),
+        .labels = SwitchLabels
+    };
+
+    ParamConfig ExpPedalMidiChParamConfig = {
+        .paramID = ParamID::PARAM_EXP_PEDAL_MIDI_CHANNEL,
+        .value = 0,
+        .labelCount = 0,
+        .labels = nullptr
+    };
+    ParamConfig ExpPedalCCNumParamConfig = {
+        .paramID = ParamID::PARAM_EXP_PEDAL_CC_NUMBER,
+        .value = 0,
+        .labelCount = 0,
+        .labels = nullptr
+    };
+
+    ParamConfig BrightnessParamConfig = {
+        .paramID = ParamID::PARAM_BRIGHTNESS,
+        .value = 0,
+        .labelCount = 0,
+        .labels = nullptr
+    };
+
+    //===========================
+    // ParamTable 実体
+    //===========================
+    ParamConfig* ParamTable[PRAM_ID_COUNT - 1] = {
+        &PedalMidiModeParamConfig,
+        &PedalMidiChParamConfig,
+        &PedalCCNumParamConfig,
+        &PedalSwitchParamConfig,
+        &ExpPedalMidiChParamConfig,
+        &ExpPedalCCNumParamConfig,
+        &BrightnessParamConfig
+    };
+
 
     //===========================
     // MenuTable 実体
@@ -174,7 +198,6 @@ namespace MenuState {
         &PedalAssignmentMenuConfig,
         &ExpPedalAssignmentMenuConfig,
         &ExpPedalCalibrationMenuConfig
-        // MAIN はメニュー画面にしないなら省略してOK
     };
 
     //===========================
@@ -191,4 +214,31 @@ namespace MenuState {
         return nullptr;
     }
 
+    //===========================
+    // getParamConfig 実装
+    //===========================
+
+    const ParamConfig* getParamConfig(ParamID id)
+    {
+        for (uint8_t i = 0; i < PRAM_ID_COUNT - 1; ++i) {
+            if (ParamTable[i]->paramID == id) {
+                return ParamTable[i];
+            }
+        }
+        return nullptr;
+    }
+
+    //===========================
+    // setValue 実装
+    //===========================
+
+    void setParamValue(ParamID id, int newValue)
+    {
+        for (uint8_t i = 0; i < PRAM_ID_COUNT - 1; ++i) {
+            if (ParamTable[i]->paramID == id) {
+                ParamTable[i]->value = newValue;
+                break;
+            }
+        }
+    }
 } // namespace MenuState

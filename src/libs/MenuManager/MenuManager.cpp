@@ -48,7 +48,7 @@ void MenuManager::enterSelectedItem(uint8_t selectedIndex) {
     }
 }
 
-void MenuManager::changeValue(uint8_t selectedIndex, char value[16]) {
+void MenuManager::changeValue(uint8_t selectedIndex, int newValue) {
     if (selectedIndex >= currentMenu.itemCount) {
         return; // 無効なインデックス
     }
@@ -56,6 +56,12 @@ void MenuManager::changeValue(uint8_t selectedIndex, char value[16]) {
     MenuItem selectedItem = currentMenu.items[selectedIndex];
 
     if (selectedItem.type == MenuType::VALUE_CHANGE) {
-        // 値を更新
+        // パラメータIDを取得して新しい値を設定
+        ParamID paramID = selectedItem.actionParam.paramID;
+        setParamValue(paramID, newValue);
     }
+}
+
+ParamConfig MenuManager::getCurrentParamConfig() const {
+    return *getParamConfig(currentMenu.items[param].actionParam.paramID);
 }

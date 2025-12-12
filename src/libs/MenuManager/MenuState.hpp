@@ -22,6 +22,19 @@ namespace MenuState {
         MENU_ID_COUNT
     };
 
+    enum ParamID : uint8_t
+    {
+        PARAM_NONE = 0,
+        PARAM_BRIGHTNESS,
+        PARAM_PEDAL_MIDI_MODE,
+        PARAM_PEDAL_MIDI_CHANNEL,
+        PARAM_PEDAL_CC_NUMBER,
+        PARAM_PEDAL_SWITCH_MODE,
+        PARAM_EXP_PEDAL_MIDI_CHANNEL,
+        PARAM_EXP_PEDAL_CC_NUMBER,
+        PRAM_ID_COUNT
+    };
+
     enum MenuType : uint8_t
     {
         NONE = 0,
@@ -32,10 +45,11 @@ namespace MenuState {
         EXIT
     };
 
-    struct ValueConfig
+    struct ParamConfig
     {
-        int* valuePtr;
-        bool isLabelled;
+        const ParamID paramID;
+        int value;
+        const int labelCount;
         const char* const* labels;
 
     };
@@ -47,7 +61,7 @@ namespace MenuState {
         union {
             const MenuID submenuID;
             void (*actionFunc)();
-            ValueConfig value;
+            ParamID paramID;
         } actionParam;
         int param;
     };
@@ -92,6 +106,9 @@ namespace MenuState {
 
     // API
     const MenuConfig* getMenuConfig(MenuID id);
+
+    const ParamConfig* getParamConfig(ParamID id);
+    void setParamValue(ParamID id, int newValue);
 
 } // namespace MenuState
 

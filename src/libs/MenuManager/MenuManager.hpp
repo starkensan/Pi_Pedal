@@ -12,9 +12,10 @@ public:
     void init(MenuConfig& initMenu);
     
     MenuConfig getCurrentMenu() const;
+    ParamConfig getCurrentParamConfig() const;
 
     void enterSelectedItem(uint8_t selectedIndex);
-    void changeValue(uint8_t selectedIndex, char* value);
+    void changeValue(uint8_t selectedIndex, int newValue);
 
 private:
 
