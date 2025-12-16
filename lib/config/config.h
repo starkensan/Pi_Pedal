@@ -9,6 +9,8 @@
 #define EXP_PEDAL_COUNT 1
 #define MAX_PEDALS (PEDAL_COUNT + EXP_PEDAL_COUNT)
 
+#define DRAW_MENU_MAX_ITEMS 3
+
 #define EXP_CH 0
 
 #define CLK_PIN 15

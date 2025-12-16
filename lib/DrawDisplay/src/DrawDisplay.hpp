@@ -5,6 +5,7 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <config.h>
 
 #include <HalDisplay.hpp>
 
@@ -24,7 +25,7 @@ public:
     void clearDisplay() override;
     void drawCentreString(const String &buf) override;
     void drawCentreNumber(const int Number) override;
-    void drawMenu(const String items[3], int cursorIndex, bool invertCursor, const String rightTexts[3]) override;
+    void drawMenu(const String items[DRAW_MENU_MAX_ITEMS], int cursorIndex, bool invertCursor, const String rightTexts[3]) override;
 
 private:
     Adafruit_SSD1306* display;

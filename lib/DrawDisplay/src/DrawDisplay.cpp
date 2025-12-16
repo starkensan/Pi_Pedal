@@ -50,17 +50,18 @@ void DrawDisplay::drawCentreNumber(const int Number){
 	display->display();
 }
 
-void DrawDisplay::drawMenu(const String items[3], int cursorIndex, bool invertCursor, const String rightTexts[3]){
+void DrawDisplay::drawMenu(const String items[DRAW_MENU_MAX_ITEMS], int cursorIndex, bool invertCursor, const String rightTexts[3]){
 
 	display->clearDisplay();
 	display->setTextSize(2);
 	display->setTextColor(SSD1306_WHITE);
 
-	for(int i=0; i<3; i++){
+	for(int i=0; i<DRAW_MENU_MAX_ITEMS; i++){
 		display->setCursor(FONT_WIDTH*2, (FONT_HEIGHT*3 + 4)*i);
 		display->print(items[i]);
+		if(rightTexts[i] != "" || rightTexts[i] != nullptr)display->print(":");
 		if(invertCursor && cursorIndex == i)display->setTextColor(SSD1306_BLACK, SSD1306_WHITE);
-		display->print(rightTexts[i]);
+		if(rightTexts[i] != "" || rightTexts[i] != nullptr)display->print(rightTexts[i]);
 		if(invertCursor && cursorIndex == i)display->setTextColor(SSD1306_WHITE);
 	}
 

@@ -61,7 +61,3 @@ void MenuManager::changeValue(uint8_t selectedIndex, int newValue) {
         setParamValue(paramID, newValue);
     }
 }
-
-ParamConfig MenuManager::getCurrentParamConfig() const {
-    return *getParamConfig(currentMenu.items[param].actionParam.paramID);
-}
