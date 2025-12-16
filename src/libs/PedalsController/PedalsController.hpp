@@ -7,8 +7,10 @@
 #include <HalUSBMIDI.hpp>
 #include <HalStorage.hpp>
 #include <SettingsManager/SettingsManager.hpp>
+#include <SettingsManager/SettingsDefs.hpp>
 #include <config.h>
 
+using namespace SettingsDefs;
 class PedalsController {
 public:
     PedalsController(HalPedal& pedals,
@@ -51,9 +53,9 @@ private:
 
     static PedalsController* self;
 
-    const int pedalPins_[MAX_PEDALS-1] = {PEDAL1_PIN, PEDAL2_PIN, PEDAL3_PIN, PEDAL4_PIN, PEDAL5_PIN, PEDAL6_PIN};
+    const int pedalPins_[PEDAL_COUNT] = {PEDAL1_PIN, PEDAL2_PIN, PEDAL3_PIN, PEDAL4_PIN, PEDAL5_PIN, PEDAL6_PIN};
 
-    bool CCPedalState_[MAX_PEDALS-1];
+    bool CCPedalState_[PEDAL_COUNT] = {false, false, false, false, false, false};
     uint8_t PCCurrentNumber_ = 0;
     
     bool midiStarted_ = false;

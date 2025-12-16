@@ -5,7 +5,9 @@
 
 #define OLED_I2C_INSTANCE Wire
 
-#define MAX_PEDALS 7
+#define PEDAL_COUNT 6
+#define EXP_PEDAL_COUNT 1
+#define MAX_PEDALS (PEDAL_COUNT + EXP_PEDAL_COUNT)
 
 #define EXP_CH 0
 
