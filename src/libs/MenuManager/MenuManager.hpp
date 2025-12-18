@@ -9,13 +9,33 @@ public:
     MenuManager() = default;
     ~MenuManager() = default;
 
+    /**
+     * @brief メニューシステムを初期化する
+     * @param initMenu 初期メニュー設定
+    */
     void init(MenuConfig& initMenu);
     
+    /**
+     * @brief 現在のメニュー設定を取得する
+     * @return 現在のメニュー設定
+    */
     MenuConfig getCurrentMenu() const;
-    ParamConfig getCurrentParamConfig() const;
-
+    /**
+     * @brief 選択されたメニュー項目に応じたアクションを実行する
+     * @param selectedIndex 選択されたメニュー項目のインデックス
+    */
     void enterSelectedItem(uint8_t selectedIndex);
+    /**
+     * @brief 選択されたメニュー項目の値を変更する
+     * @param selectedIndex 選択されたメニュー項目のインデックス
+     * @param newValue 新しい値
+    */
     void changeValue(uint8_t selectedIndex, int newValue);
+    /**
+     * @brief メニューが値変更モードかどうかを取得する
+     * @return 値変更モードならtrue、そうでなければfalse
+    */
+    bool isSelected() const { return selected; }
 
 private:
 

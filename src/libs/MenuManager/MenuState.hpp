@@ -105,9 +105,24 @@ namespace MenuState {
     // （MAIN を除く分だけ、みたいなイメージ）
 
     // API
+    /**
+     * @brief MenuID から対応する MenuConfig へのポインタを取得する
+     * @param id 取得したいメニューの MenuID
+     * @return 対応する MenuConfig へのポインタ（存在しない場合は nullptr）
+     */
     const MenuConfig* getMenuConfig(MenuID id);
 
+    /**
+     * @brief ParamID から対応する ParamConfig へのポインタを取得する
+     * @param id 取得したいパラメータの ParamID
+     * @return 対応する ParamConfig へのポインタ（存在しない場合は nullptr）
+     */
     const ParamConfig* getParamConfig(ParamID id);
+    /**
+     * @brief 指定した ParamID のパラメータ値を設定する
+     * @param id 設定したいパラメータの ParamID
+     * @param newValue 新しい値
+     */
     void setParamValue(ParamID id, int newValue);
 
 } // namespace MenuState
