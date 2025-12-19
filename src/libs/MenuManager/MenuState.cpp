@@ -130,45 +130,59 @@ namespace MenuState {
     ParamConfig PedalMidiModeParamConfig = {
         .paramID = ParamID::PARAM_PEDAL_MIDI_MODE,
         .value = 0,
-        .labelCount = static_cast<int>(sizeof(PedalMidiModeLabels) / sizeof(PedalMidiModeLabels[0])),
+        .isLabelMode = true,
+        .minValue = 0,
+        .maxValue = static_cast<int>(sizeof(PedalMidiModeLabels) / sizeof(PedalMidiModeLabels[0])) - 1,
         .labels = PedalMidiModeLabels
     };
     ParamConfig PedalMidiChParamConfig = {
         .paramID = ParamID::PARAM_PEDAL_MIDI_CHANNEL,
-        .value = 0,
-        .labelCount = 0,
+        .value = 1,
+        .isLabelMode = false,
+        .minValue = 1,
+        .maxValue = 16,
         .labels = nullptr
     };
     ParamConfig PedalCCNumParamConfig = {
         .paramID = ParamID::PARAM_PEDAL_CC_NUMBER,
         .value = 0,
-        .labelCount = 0,
+        .isLabelMode = false,
+        .minValue = 0,
+        .maxValue = 127,
         .labels = nullptr
     };
     ParamConfig PedalSwitchParamConfig = {
         .paramID = ParamID::PARAM_PEDAL_SWITCH_MODE,
         .value = 0,
-        .labelCount = static_cast<int>(sizeof(SwitchLabels) / sizeof(SwitchLabels[0])),
+        .isLabelMode = true,
+        .minValue = 0,
+        .maxValue = static_cast<int>(sizeof(SwitchLabels) / sizeof(SwitchLabels[0])) - 1,
         .labels = SwitchLabels
     };
 
     ParamConfig ExpPedalMidiChParamConfig = {
         .paramID = ParamID::PARAM_EXP_PEDAL_MIDI_CHANNEL,
-        .value = 0,
-        .labelCount = 0,
+        .value = 1,
+        .isLabelMode = false,
+        .minValue = 1,
+        .maxValue = 16,
         .labels = nullptr
     };
     ParamConfig ExpPedalCCNumParamConfig = {
         .paramID = ParamID::PARAM_EXP_PEDAL_CC_NUMBER,
         .value = 0,
-        .labelCount = 0,
+        .isLabelMode = false,
+        .minValue = 0,
+        .maxValue = 127,
         .labels = nullptr
     };
 
     ParamConfig BrightnessParamConfig = {
         .paramID = ParamID::PARAM_BRIGHTNESS,
         .value = 0,
-        .labelCount = 0,
+        .isLabelMode = false,
+        .minValue = 0,
+        .maxValue = 100,
         .labels = nullptr
     };
 
@@ -232,13 +246,19 @@ namespace MenuState {
     // setValue 実装
     //===========================
 
-    void setParamValue(ParamID id, int newValue)
+    bool setParamValue(ParamID id, int newValue)
     {
         for (uint8_t i = 0; i < PRAM_ID_COUNT - 1; ++i) {
             if (ParamTable[i]->paramID == id) {
+                if (newValue < ParamTable[i]->minValue || newValue > ParamTable[i]->maxValue)
+                {
+                    return false;; // 範囲外
+                }
+                
                 ParamTable[i]->value = newValue;
-                break;
+                return true; // 正常に設定された
             }
         }
+        return false; // 見つからなかった
     }
 } // namespace MenuState
