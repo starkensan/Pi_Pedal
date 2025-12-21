@@ -12,6 +12,7 @@ namespace MenuState {
         {"Pedal Settings",     MenuType::SUBMENU, {.submenuID = MenuID::PEDAL_SETTINGS},      0},
         {"Exp Pedal Settings", MenuType::SUBMENU, {.submenuID = MenuID::EXP_PEDAL_SETTINGS},  0},
         {"Display Settings",   MenuType::SUBMENU, {.submenuID = MenuID::DISPLAY_SETTINGS},    0},
+        {"Save",               MenuType::SAVE,     {},                                         0},
         {"Exit",               MenuType::EXIT,    {},                                         0}
     };
 
@@ -60,7 +61,7 @@ namespace MenuState {
     // Exp Pedal Calibration Menu Items
     const MenuItem ExpPedalCalibrationMenuItems[] = {
         {"Calibrate", MenuType::FUNCTION, .actionParam = {.actionFunc = nullptr}, 0},
-        {"Save", MenuType::SAVE, .actionParam = {}, 0},
+        {"Save", MenuType::APLLY, .actionParam = {}, 0},
         {"Exit", MenuType::EXIT, .actionParam = {}, 0}
     };
     const MenuConfig ExpPedalCalibrationMenuConfig = {
@@ -76,7 +77,7 @@ namespace MenuState {
         {"Midi Ch", MenuType::VALUE_CHANGE, .actionParam = {.paramID = ParamID::PARAM_PEDAL_MIDI_CHANNEL}, 0},
         {"CC Num", MenuType::VALUE_CHANGE, .actionParam = {.paramID = ParamID::PARAM_PEDAL_CC_NUMBER}, 0},
         {"Switch", MenuType::VALUE_CHANGE, .actionParam = {.paramID = ParamID::PARAM_PEDAL_SWITCH_MODE}, 0},
-        {"Save", MenuType::SAVE, .actionParam = {}, 0},
+        {"Save", MenuType::APLLY, .actionParam = {}, 0},
         {"Exit", MenuType::EXIT, .actionParam = {}, 0}
     };
     const MenuConfig PedalAssignmentMenuConfig = {
