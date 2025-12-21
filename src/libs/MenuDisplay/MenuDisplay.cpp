@@ -34,9 +34,9 @@ void MenuDisplay::render(int cursorIndex) {
             const ParamConfig& paramConfig = *getParamConfig(menuItem.actionParam.paramID);
             if(menuItem.type == MenuType::VALUE_CHANGE) {
                 // パラメータの現在値を右側に表示
-                if (paramConfig.labelCount > 0 && 
+                if (paramConfig.isLabelMode && 
                     paramConfig.value >= 0 && 
-                    paramConfig.value < paramConfig.labelCount) {
+                    paramConfig.value <= paramConfig.maxValue) {
                     rightTexts[i] = String(paramConfig.labels[paramConfig.value]);
                 } else {
                     rightTexts[i] = String(paramConfig.value);

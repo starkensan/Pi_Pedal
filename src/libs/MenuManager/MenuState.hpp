@@ -49,7 +49,9 @@ namespace MenuState {
     {
         const ParamID paramID;
         int value;
-        const int labelCount;
+        bool isLabelMode; // true: ラベル、false: 数値
+        const int minValue;
+        const int maxValue;
         const char* const* labels;
 
     };
@@ -122,8 +124,9 @@ namespace MenuState {
      * @brief 指定した ParamID のパラメータ値を設定する
      * @param id 設定したいパラメータの ParamID
      * @param newValue 新しい値
+     * @return true: 値が正常に設定された, false: 値が範囲外だった
      */
-    void setParamValue(ParamID id, int newValue);
+    bool setParamValue(ParamID id, int newValue);
 
 } // namespace MenuState
 
