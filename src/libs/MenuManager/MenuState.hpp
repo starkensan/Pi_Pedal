@@ -41,6 +41,7 @@ namespace MenuState {
         SUBMENU,
         VALUE_CHANGE,
         FUNCTION,
+        APLLY,
         SAVE,
         EXIT
     };
