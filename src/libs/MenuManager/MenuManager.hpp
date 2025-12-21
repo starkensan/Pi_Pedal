@@ -2,11 +2,17 @@
 #define MENU_MANAGER_HPP
 #include "MenuState.hpp"
 
+#include <config.h>
+
+#include <SettingsManager/SettingsManager.hpp>
+
 using namespace MenuState;
 
 class MenuManager {
 public:
-    MenuManager() = default;
+    MenuManager(SettingsManager& settingsManager)
+    : settingsManager_(settingsManager)
+    {}
     ~MenuManager() = default;
 
     /**
@@ -22,25 +28,29 @@ public:
     MenuConfig getCurrentMenu() const;
     /**
      * @brief 選択されたメニュー項目に応じたアクションを実行する
-     * @param selectedIndex 選択されたメニュー項目のインデックス
     */
-    void enterSelectedItem(uint8_t selectedIndex);
+    void enterSelectedItem();
     /**
      * @brief 選択されたメニュー項目の値を変更する
-     * @param selectedIndex 選択されたメニュー項目のインデックス
      * @param newValue 新しい値
     */
-    void changeValue(uint8_t selectedIndex, int newValue);
-    /**
-     * @brief メニューが値変更モードかどうかを取得する
-     * @return 値変更モードならtrue、そうでなければfalse
-    */
+    void cusorUp(int value = 1);
+    void cusorDown(int value = 1);
+
+    int getCurrentIndex() const { return index; }
     bool isSelected() const { return selected; }
 
 private:
 
+    void applySettings();
+
+    void MemToParam();
+
+    SettingsManager& settingsManager_;
+
     MenuConfig currentMenu;
     bool selected;
+    int index;
     int param;
     
 };
