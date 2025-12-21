@@ -1,5 +1,6 @@
 #include "MenuManager.hpp"
-void MenuManager::init(MenuConfig& initMenu) {
+void MenuManager::init(MenuConfig& initMenu, TwoWire* wireInstance, int SDA, int SCL, int screenWidth, int screenHeight) {
+    menuDisplay_.begin(wireInstance, SDA, SCL, screenWidth, screenHeight);
     currentMenu = initMenu;
     selected = false;
     param = 0;
@@ -22,6 +23,7 @@ void MenuManager::enterSelectedItem() {
             currentMenu = *getMenuConfig(selectedItem.actionParam.submenuID);
             MemToParam();
             index = 0;
+            menuDisplay_.render(index, selected, currentMenu);
             break;
         }
         case MenuType::APLLY: {
@@ -38,6 +40,7 @@ void MenuManager::enterSelectedItem() {
             // 前のメニューに戻る
             currentMenu = *getMenuConfig(currentMenu.prevMenuID);
             index = 0;
+            menuDisplay_.render(index, selected, currentMenu);
             break;
         }
         case MenuType::FUNCTION: {
@@ -70,6 +73,7 @@ void MenuManager::cusorUp(int value) {
                     newValue = paramConfig->maxValue;
                 }
                 setParamValue(paramConfig->paramID, newValue);
+                menuDisplay_.render(index, selected, currentMenu);
                 
             }
         }
@@ -79,6 +83,7 @@ void MenuManager::cusorUp(int value) {
         if (index < 0) {
             index = 0;
         }
+        menuDisplay_.render(index, selected, currentMenu);
     }
 }
 
@@ -94,6 +99,7 @@ void MenuManager::cusorDown(int value) {
                     newValue = paramConfig->minValue;
                 }
                 setParamValue(paramConfig->paramID, newValue);
+                menuDisplay_.render(index, selected, currentMenu);
             }
         }
     } else {
@@ -102,6 +108,7 @@ void MenuManager::cusorDown(int value) {
         if (index >= currentMenu.itemCount) {
             index = currentMenu.itemCount - 1;
         }
+        menuDisplay_.render(index, selected, currentMenu);
     }
 }
 

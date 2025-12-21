@@ -2,7 +2,6 @@
 #define MENU_DISPLAY_HPP
 
 #include <HalDisplay.hpp>
-#include <MenuManager/MenuManager.hpp>
 #include <MenuManager/MenuState.hpp>
 #include <config.h>
 
@@ -10,13 +9,20 @@ using namespace MenuState;
 
 class MenuDisplay {
 public:
-    MenuDisplay(HalDisplay& display, MenuManager& menuManager)
-        : display_(display), menuManager_(menuManager) {}
+    MenuDisplay(HalDisplay& display)
+        : display_(display){}
+    
+    void begin(TwoWire* wireInstance,
+               int SDA,
+               int SCL,
+               int screenWidth,
+               int screenHeight) {
+        display_.begin(wireInstance, SDA, SCL, screenWidth, screenHeight);
+    }
 
-    void render(int cursorIndesx);
+    void render(int cursorIndesx, bool selected, MenuConfig currentMenu);
 private:
     HalDisplay& display_;
-    MenuManager& menuManager_;
 
     int lastHeadIndex = 0;
 };

@@ -3,15 +3,18 @@
 #include "MenuState.hpp"
 
 #include <config.h>
+#include <HalStorage.hpp>
 
 #include <SettingsManager/SettingsManager.hpp>
+#include <MenuDisplay/MenuDisplay.hpp>
 
 using namespace MenuState;
 
 class MenuManager {
 public:
-    MenuManager(SettingsManager& settingsManager)
-    : settingsManager_(settingsManager)
+    MenuManager(SettingsManager& settingsManager, HalDisplay& display)
+    : menuDisplay_(display)
+    , settingsManager_(settingsManager)
     {}
     ~MenuManager() = default;
 
@@ -19,7 +22,7 @@ public:
      * @brief メニューシステムを初期化する
      * @param initMenu 初期メニュー設定
     */
-    void init(MenuConfig& initMenu);
+    void init(MenuConfig& initMenu, TwoWire* wireInstance, int SDA, int SCL, int screenWidth, int screenHeight);
     
     /**
      * @brief 現在のメニュー設定を取得する
@@ -47,6 +50,7 @@ private:
     void MemToParam();
 
     SettingsManager& settingsManager_;
+    MenuDisplay menuDisplay_;
 
     MenuConfig currentMenu;
     bool selected;
