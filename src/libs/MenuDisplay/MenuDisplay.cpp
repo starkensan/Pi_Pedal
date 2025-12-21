@@ -1,6 +1,5 @@
 #include "MenuDisplay.hpp"
-void MenuDisplay::render(int cursorIndex) {
-    MenuConfig currentMenu = menuManager_.getCurrentMenu();
+void MenuDisplay::render(int cursorIndex, bool selected, MenuConfig currentMenu) {
 
     if( currentMenu.itemCount <= cursorIndex ) {
         cursorIndex = currentMenu.itemCount - 1;
@@ -50,5 +49,5 @@ void MenuDisplay::render(int cursorIndex) {
     }
 
     display_.clearDisplay();
-    display_.drawMenu(items, cursorIndex, menuManager_.isSelected(), rightTexts);
+    display_.drawMenu(items, cursorIndex, selected, rightTexts);
 }
