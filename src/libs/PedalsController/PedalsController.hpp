@@ -5,7 +5,6 @@
 #include <HalPedal.hpp>
 #include <HalExpPedal.hpp>
 #include <HalUSBMIDI.hpp>
-#include <HalStorage.hpp>
 #include <SettingsManager/SettingsManager.hpp>
 #include <SettingsManager/SettingsDefs.hpp>
 #include <config.h>

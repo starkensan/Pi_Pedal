@@ -12,13 +12,7 @@ public:
     MenuDisplay(HalDisplay& display)
         : display_(display){}
     
-    void begin(TwoWire* wireInstance,
-               int SDA,
-               int SCL,
-               int screenWidth,
-               int screenHeight) {
-        display_.begin(wireInstance, SDA, SCL, screenWidth, screenHeight);
-    }
+    void begin();
 
     void render(int cursorIndesx, bool selected, MenuConfig currentMenu);
 private:
