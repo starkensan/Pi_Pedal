@@ -22,7 +22,7 @@ public:
      * @brief メニューシステムを初期化する
      * @param initMenu 初期メニュー設定
     */
-    void init(MenuConfig& initMenu, TwoWire* wireInstance, int SDA, int SCL, int screenWidth, int screenHeight);
+    void init(MenuID initMenuID);
     
     /**
      * @brief 現在のメニュー設定を取得する

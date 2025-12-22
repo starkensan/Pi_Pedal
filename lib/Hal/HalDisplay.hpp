@@ -11,12 +11,7 @@ public:
     virtual ~HalDisplay() {}
 
     // OLED等の初期化処理
-    virtual void begin(TwoWire* wireInstance,
-                       int SDA,
-                       int SCL,
-                       int screenWidth,
-                       int screenHeight,
-                       int screenAddress = DEFAULT_ADC_ADDRESS) = 0;
+    virtual void begin() = 0;
 
     // 画面全体をクリア
     virtual void clearDisplay() = 0;
