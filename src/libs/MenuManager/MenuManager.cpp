@@ -5,6 +5,7 @@ void MenuManager::init(MenuID initMenuID) {
     selected = false;
     param = 0;
     index = 0;
+    menuDisplay_.render(index, selected, currentMenu);
 }
 
 MenuConfig MenuManager::getCurrentMenu() const {

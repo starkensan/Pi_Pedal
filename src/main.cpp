@@ -2,29 +2,18 @@
 #include <Adafruit_TinyUSB.h>
 #include <config.h>
 
-#include <Pedal.hpp>
-#include <ExpPedal.hpp>
-#include <USBMIDI.hpp>
-#include <EepromStorage.hpp>
+#include <DrawDisplay.hpp>
 
-#include <SettingsManager/SettingsManager.hpp>
-#include <PedalsController/PedalsController.hpp>
-
-Pedal pedal;
-ExpPedal expPedal;
-USBMIDI usbmidi;
-EepromStorage storage;
-
-SettingsManager settings(storage);
-
-PedalsController pedals(pedal, expPedal, usbmidi, settings);
+DrawDisplay display(&OLED_I2C_INSTANCE, SDA0_PIN, SCL0_PIN);
 
 void setup() {
-    settings.begin();
-    pedals.begin("PiPedals");
-    pedals.start();
+    display.begin();
 }
-
 void loop() {
-    pedals.update();
+    display.drawMenu(
+        (String[DRAW_MENU_MAX_ITEMS]){"Item 1", "Item 2", "Item 3"},
+        1,
+        false,
+        (String[3]){"R1", "R2", "R3"}
+    );
 }
