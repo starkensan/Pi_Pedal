@@ -42,6 +42,7 @@ public:
 
     int getCurrentIndex() const { return index; }
     bool isSelected() const { return selected; }
+    bool isSetting() const { return currentMenu.menuID != MenuID::MAIN; }
 
 private:
 

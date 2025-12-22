@@ -15,8 +15,13 @@ public:
     void begin();
 
     void render(int cursorIndesx, bool selected, MenuConfig currentMenu);
+    void clear() {
+        display_.clearDisplay();
+    }
 private:
     HalDisplay& display_;
+
+    MenuID prevMenuID = MenuID::MAIN;
 
     int lastHeadIndex = 0;
 };

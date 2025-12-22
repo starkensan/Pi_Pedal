@@ -1,13 +1,14 @@
 #include "DrawDisplay.hpp"
 
-DrawDisplay::DrawDisplay(TwoWire* wireInstance, int SDA_PIN, int SCL_PIN, int width, int height, int address=DEFAULT_SCREEN_ADDRESS)
-: ADDRESS(address), screenWidth(width), screenHeight(height) {
+DrawDisplay::DrawDisplay(TwoWire* wireInstance, int SDA_PIN, int SCL_PIN, int width, int height, int address)
+: SDA_PIN(SDA_PIN), SCL_PIN(SCL_PIN), ADDRESS(address), screenWidth(width), screenHeight(height) {
 	wire = wireInstance;
-	wire->setSDA(SDA_PIN);
-	wire->setSCL(SCL_PIN);
 }
 
 void DrawDisplay::begin(){
+	wire->setSDA(SDA_PIN);
+	wire->setSCL(SCL_PIN);
+
 	display = new Adafruit_SSD1306(screenWidth, screenHeight, wire, OLED_RESET);
 
 	if(!display->begin(SSD1306_SWITCHCAPVCC, ADDRESS)) {

@@ -3,7 +3,6 @@
 
 #include <MenuManager/MenuManager.hpp>
 #include <MenuManager/MenuState.hpp>
-#include <MenuDisplay/MenuDisplay.hpp>
 #include <HalRotaryEncoder.hpp>
 #include <HalDisplay.hpp>
 #include <SettingsManager/SettingsManager.hpp>
@@ -13,7 +12,7 @@ using namespace MenuState;
 class MenuController {
 public:
     MenuController(HalDisplay& display, HalRotaryEncoder& rotaryEncoder, SettingsManager& settingsManager)
-        : rotaryEncoder_(rotaryEncoder),  menuManager_(settingsManager, display), settingsManager_(settingsManager) {
+        : rotaryEncoder_(rotaryEncoder),  menuManager_(settingsManager, display){
         self = this;
     }
     ~MenuController() = default;
@@ -34,7 +33,6 @@ private:
     MenuManager menuManager_;
 
     HalRotaryEncoder& rotaryEncoder_;
-    SettingsManager& settingsManager_;
 };
 
 #endif // MENU_CONTROLLER_HPP

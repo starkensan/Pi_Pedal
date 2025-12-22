@@ -19,7 +19,7 @@
 #define FONT_HEIGHT 6
 class DrawDisplay: public HalDisplay {
 public:
-    DrawDisplay(TwoWire* wireInstance, int SDA_PIN, int SCL_PIN, int width, int height, int address=DEFAULT_SCREEN_ADDRESS);
+    DrawDisplay(TwoWire* wireInstance, int SDA_PIN, int SCL_PIN, int width=SCREEN_WIDTH, int height=SCREEN_HEIGHT, int address=DEFAULT_SCREEN_ADDRESS);
     ~DrawDisplay(){ delete display; }
 
     void begin() override;
@@ -31,6 +31,8 @@ public:
 private:
     Adafruit_SSD1306* display;
     TwoWire *wire;
+    int SDA_PIN;
+    int SCL_PIN;
     int ADDRESS;
     int screenWidth, screenHeight;
 
