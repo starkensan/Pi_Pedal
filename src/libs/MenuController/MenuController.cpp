@@ -6,6 +6,7 @@ void MenuController::begin() {
     rotaryEncoder_.attachRotaryCallback(staticRotaryCallback);
     rotaryEncoder_.attachSwitchCallback(staticSwitchCallback);
     menuManager_.init(MenuID::MAIN);
+    menuManager_.showPCNumber(0);
 }
 
 void MenuController::update() {

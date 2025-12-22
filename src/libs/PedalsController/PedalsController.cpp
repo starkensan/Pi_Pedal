@@ -70,11 +70,12 @@ void PedalsController::pedalsCallback(int index, bool state) {
                     settings_.getPedalSettings(index).midiChannel,
                     PCCurrentNumber_
                 );
+                PCCallback_(PCCurrentNumber_);
             }
         }else if(settings_.getPedalSettings(index).pedalMode == PedalMode::PC_BACK){
             // Program Change Back
             if(state){
-                if (PCCurrentNumber_ == 0) {
+                if (PCCurrentNumber_ <= 0) {
                     PCCurrentNumber_ = 127;
                 } else {
                     PCCurrentNumber_--;
@@ -83,6 +84,7 @@ void PedalsController::pedalsCallback(int index, bool state) {
                     settings_.getPedalSettings(index).midiChannel,
                     PCCurrentNumber_
                 );
+                PCCallback_(PCCurrentNumber_);
             }
         }
     }

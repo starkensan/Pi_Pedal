@@ -21,6 +21,8 @@ public:
 
     void update();
 
+    void showPCNumber(int number){ menuManager_.showPCNumber(number); }
+
 private:
     static MenuController* self;
 

@@ -30,6 +30,8 @@ public:
     */
     void begin(String DeviceName);
 
+    void attachPCCallbacks(void (*PCCallback)(int)) { PCCallback_ = PCCallback; }
+
     /**
      * @brief MIDI送信開始
      */
@@ -70,6 +72,7 @@ private:
 
     void pedalsCallback(int index, bool state);
     void expPedalCallback(int value);
+    void (*PCCallback_)(int) = nullptr;
 };
 
 #endif // PEDALS_CONTROLLER_HPP

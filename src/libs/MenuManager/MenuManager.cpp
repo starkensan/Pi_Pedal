@@ -11,6 +11,13 @@ MenuConfig MenuManager::getCurrentMenu() const {
     return currentMenu;
 }
 
+void MenuManager::showPCNumber(int number) {
+    PCNumber = number;
+    if(currentMenu.menuID == MenuID::MAIN) {
+        menuDisplay_.renderNumber(number);
+    }
+}
+
 void MenuManager::enterSelectedItem() {
     if (index >= currentMenu.itemCount) {
         return; // 無効なインデックス
@@ -56,6 +63,7 @@ void MenuManager::enterSelectedItem() {
             selected = false;
             if(currentMenu.menuID == MenuID::MAIN) {
                 menuDisplay_.clear();
+                menuDisplay_.renderNumber(PCNumber);
             }else{
                 menuDisplay_.render(index, selected, currentMenu);
             }
