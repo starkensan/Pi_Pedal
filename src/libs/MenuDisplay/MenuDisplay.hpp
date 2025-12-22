@@ -14,6 +14,9 @@ public:
     
     void begin();
 
+    void renderNumber(int number) {
+        display_.drawCentreNumber(number);
+    }
     void render(int cursorIndesx, bool selected, MenuConfig currentMenu);
     void clear() {
         display_.clearDisplay();

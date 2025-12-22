@@ -30,6 +30,12 @@ public:
     */
     MenuConfig getCurrentMenu() const;
     /**
+     * @brief PC番号を表示する（メインメニュー時のみ）
+     * @param display HalDisplayインスタンス
+     * @param number 表示するPC番号
+    */
+    void showPCNumber(int number);
+    /**
      * @brief 選択されたメニュー項目に応じたアクションを実行する
     */
     void enterSelectedItem();
@@ -57,6 +63,8 @@ private:
     bool selected;
     int index;
     int param;
+
+    int PCNumber = 0;
     
 };
 #endif // MENU_MANAGER_HPP
