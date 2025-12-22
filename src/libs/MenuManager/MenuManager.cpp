@@ -5,7 +5,6 @@ void MenuManager::init(MenuID initMenuID) {
     selected = false;
     param = 0;
     index = 0;
-    menuDisplay_.render(index, selected, currentMenu);
 }
 
 MenuConfig MenuManager::getCurrentMenu() const {
@@ -34,6 +33,12 @@ void MenuManager::enterSelectedItem() {
             menuDisplay_.render(index, selected, currentMenu);
             break;
         }
+        case MenuType::FUNCTION: {
+            // 関数を呼び出す
+            if(currentMenu.menuID == MenuID::SETTINGS && index) {
+                settingsManager_.FactoryReset();
+            }
+        }
         case MenuType::APPLY: {
             // 適用処理（必要に応じて実装）
             applySettings();
@@ -53,13 +58,6 @@ void MenuManager::enterSelectedItem() {
                 menuDisplay_.clear();
             }else{
                 menuDisplay_.render(index, selected, currentMenu);
-            }
-            break;
-        }
-        case MenuType::FUNCTION: {
-            // 関数を呼び出す
-            if (selectedItem.actionParam.actionFunc != nullptr) {
-                selectedItem.actionParam.actionFunc();
             }
             break;
         }

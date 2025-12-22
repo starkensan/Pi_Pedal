@@ -46,6 +46,7 @@ void loop(){
 }
 
 void setup1() {
+    delay(3000);
     settings.begin();
     menuController.begin();
 }

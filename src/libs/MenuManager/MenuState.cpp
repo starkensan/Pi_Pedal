@@ -14,6 +14,7 @@ namespace MenuState {
         {"Pedal",   MenuType::SUBMENU, {.submenuID = MenuID::PEDAL_SETTINGS},      0},
         {"Exp",     MenuType::SUBMENU, {.submenuID = MenuID::EXP_PEDAL_SETTINGS},  0},
         {"Display", MenuType::SUBMENU, {.submenuID = MenuID::DISPLAY_SETTINGS},    0},
+        {"FC Reset", MenuType::FUNCTION, {.actionFunc = nullptr},               0},
         {"Save",    MenuType::SAVE,    {},                                         0},
         {"Exit",    MenuType::EXIT,    {},                                         0}
     };
@@ -120,6 +121,7 @@ namespace MenuState {
 
     // Pedal Assignment Menu Items
     const char* PedalMidiModeLabels[] = {
+        (char*)"None",
         (char*)"CC",
         (char*)"NEXT",
         (char*)"BACK"
