@@ -5,44 +5,64 @@
 #include <HalPedal.hpp>
 #include <HalExpPedal.hpp>
 #include <HalUSBMIDI.hpp>
-#include <HalStorage.hpp>
 #include <SettingsManager/SettingsManager.hpp>
+#include <SettingsManager/SettingsDefs.hpp>
 #include <config.h>
 
+using namespace SettingsDefs;
 class PedalsController {
 public:
     PedalsController(HalPedal& pedals,
                      HalExpPedal& expPedal,
                      HalUSBMIDI& usbMIDI,
-                     HalStorage& storage)
+                     SettingsManager& settings)
     : pedals_(pedals)
     , expPedal_(expPedal)
     , usbMIDI_(usbMIDI)
-    , settings_(storage)
+    , settings_(settings)
     {
         self = this;
     }
 
-    // 初期化
+    /**
+     * @brief 初期化処理
+     * @param DeviceName USB MIDIデバイス名
+    */
     void begin(String DeviceName);
 
+    void attachPCCallbacks(void (*PCCallback)(int)) { PCCallback_ = PCCallback; }
+
+    /**
+     * @brief MIDI送信開始
+     */
     void start();
 
+    /**
+     * @brief MIDI送信停止
+     */
     void stop();
 
-    // 定期処理
+    /**
+     * @brief 現在のPC番号を取得
+     * @return PC番号
+     */
+    int getPCCurrentNumber() const { return PCCurrentNumber_; }
+
+    /**
+     * @brief 定期処理
+     */
     void update();
 private:
     HalPedal&    pedals_;
     HalExpPedal& expPedal_;
     HalUSBMIDI&  usbMIDI_;
-    SettingsManager settings_;
+    SettingsManager& settings_;
 
     static PedalsController* self;
 
-    const int pedalPins_[MAX_PEDALS-1] = {PEDAL1_PIN, PEDAL2_PIN, PEDAL3_PIN, PEDAL4_PIN, PEDAL5_PIN, PEDAL6_PIN};
+    const int pedalPins_[PEDAL_COUNT] = {PEDAL1_PIN, PEDAL2_PIN, PEDAL3_PIN, PEDAL4_PIN, PEDAL5_PIN, PEDAL6_PIN};
 
-    bool CCPedalState_[MAX_PEDALS-1];
+    bool CCPedalState_[PEDAL_COUNT] = {false, false, false, false, false, false};
     uint8_t PCCurrentNumber_ = 0;
     
     bool midiStarted_ = false;
@@ -52,6 +72,7 @@ private:
 
     void pedalsCallback(int index, bool state);
     void expPedalCallback(int value);
+    void (*PCCallback_)(int) = nullptr;
 };
 
 #endif // PEDALS_CONTROLLER_HPP

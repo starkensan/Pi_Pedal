@@ -104,12 +104,12 @@ void setup() {
 	}
 
 	// テスト対象の生成＆初期化
-	DrawDisplay dd;
+	DrawDisplay dd(&OLED_I2C_INSTANCE, SDA0_PIN, SCL0_PIN, SCREEN_WIDTH, SCREEN_HEIGHT);
 	g_dd = &dd;
 
 	// 注意: init() 内で begin() 失敗時は for(;;) で止まる実装なので、
 	// ここに来る時点で I2C 疎通が取れていることを事前に確認しています。
-	g_dd->begin(&OLED_I2C_INSTANCE, SDA0_PIN, SCL0_PIN, SCREEN_WIDTH, SCREEN_HEIGHT);
+	g_dd->begin();
 
 	// ---- テスト実行 ----
 	RUN_TEST(test_draw_center_string_various);
