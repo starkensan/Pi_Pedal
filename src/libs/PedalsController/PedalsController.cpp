@@ -3,9 +3,6 @@
 PedalsController* PedalsController::self = nullptr;
 
 void PedalsController::begin(String DeviceName) {
-     // 設定ロード（EEPROM -> RAM）
-    settings_.begin();
-
     // USB MIDI 初期化
     usbMIDI_.begin(DeviceName);
     delay(1000);

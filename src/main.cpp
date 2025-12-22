@@ -20,6 +20,7 @@ SettingsManager settings(storage);
 PedalsController pedals(pedal, expPedal, usbmidi, settings);
 
 void setup() {
+    settings.begin();
     pedals.begin("PiPedals");
     pedals.start();
 }
