@@ -5,20 +5,34 @@
 #include <MenuManager/MenuState.hpp>
 #include <MenuDisplay/MenuDisplay.hpp>
 #include <HalRotaryEncoder.hpp>
+#include <HalDisplay.hpp>
 #include <SettingsManager/SettingsManager.hpp>
 
 using namespace MenuState;
 
 class MenuController {
 public:
-    MenuController(MenuManager& menuManager, HalRotaryEncoder& rotaryEncoder, SettingsManager& settingsManager)
-        : menuManager_(menuManager), rotaryEncoder_(rotaryEncoder), settingsManager_(settingsManager) {}
+    MenuController(HalDisplay& display, HalRotaryEncoder& rotaryEncoder, SettingsManager& settingsManager)
+        : rotaryEncoder_(rotaryEncoder),  menuManager_(settingsManager, display), settingsManager_(settingsManager) {
+        self = this;
+    }
     ~MenuController() = default;
 
     void begin();
 
+    void update();
+
 private:
-    MenuManager& menuManager_;
+    static MenuController* self;
+
+    static void staticRotaryCallback(int direction, int count);
+    static void staticSwitchCallback();
+
+    void RotaryCallback(int direction, int count);
+    void SwitchCallback();
+
+    MenuManager menuManager_;
+
     HalRotaryEncoder& rotaryEncoder_;
     SettingsManager& settingsManager_;
 };
