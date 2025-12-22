@@ -60,8 +60,9 @@ void DrawDisplay::drawMenu(const String items[DRAW_MENU_MAX_ITEMS], int cursorIn
 	for(int i=0; i<DRAW_MENU_MAX_ITEMS; i++){
 		display->setCursor(FONT_WIDTH*2, (FONT_HEIGHT*3 + 4)*i);
 		display->print(items[i]);
+		if(rightTexts[i] != "" || rightTexts[i] != nullptr)display->print(":");
 		if(invertCursor && cursorIndex == i)display->setTextColor(SSD1306_BLACK, SSD1306_WHITE);
-		display->print(rightTexts[i]);
+		if(rightTexts[i] != "" || rightTexts[i] != nullptr)display->print(rightTexts[i]);
 		if(invertCursor && cursorIndex == i)display->setTextColor(SSD1306_WHITE);
 	}
 

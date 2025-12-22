@@ -17,6 +17,12 @@ void MenuManager::enterSelectedItem() {
         return; // 無効なインデックス
     }
 
+    if(currentMenu.menuID == MenuID::MAIN) {
+        currentMenu = *getMenuConfig(MenuID::SETTINGS);
+        index = 0;
+        menuDisplay_.render(index, selected, currentMenu);
+        return;
+    }
     MenuItem selectedItem = currentMenu.items[index];
     switch (selectedItem.type) {
         case MenuType::SUBMENU: {
@@ -28,7 +34,7 @@ void MenuManager::enterSelectedItem() {
             menuDisplay_.render(index, selected, currentMenu);
             break;
         }
-        case MenuType::APLLY: {
+        case MenuType::APPLY: {
             // 適用処理（必要に応じて実装）
             applySettings();
             break;
@@ -42,7 +48,12 @@ void MenuManager::enterSelectedItem() {
             // 前のメニューに戻る
             currentMenu = *getMenuConfig(currentMenu.prevMenuID);
             index = 0;
-            menuDisplay_.render(index, selected, currentMenu);
+            selected = false;
+            if(currentMenu.menuID == MenuID::MAIN) {
+                menuDisplay_.clear();
+            }else{
+                menuDisplay_.render(index, selected, currentMenu);
+            }
             break;
         }
         case MenuType::FUNCTION: {
@@ -55,6 +66,7 @@ void MenuManager::enterSelectedItem() {
         case MenuType::VALUE_CHANGE: {
             // 値変更モードに入る/出る
             selected = !selected;
+            menuDisplay_.render(index, selected, currentMenu);
             break;
         }
         case MenuType::NONE:
@@ -70,9 +82,9 @@ void MenuManager::cusorUp(int value) {
         if (selectedItem.type == MenuType::VALUE_CHANGE) {
             ParamConfig* paramConfig = (ParamConfig*)(getParamConfig(selectedItem.actionParam.paramID));
             if (paramConfig) {
-                int newValue = paramConfig->value + value;
-                if (newValue > paramConfig->maxValue) {
-                    newValue = paramConfig->maxValue;
+                int newValue = getParamValue(selectedItem.actionParam.paramID) - 1;
+                if (newValue < paramConfig->minValue) {
+                    newValue = paramConfig->minValue;
                 }
                 setParamValue(paramConfig->paramID, newValue);
                 menuDisplay_.render(index, selected, currentMenu);
@@ -81,7 +93,7 @@ void MenuManager::cusorUp(int value) {
         }
     } else {
         // メニュー移動モード
-        index -= value;
+        index --;
         if (index < 0) {
             index = 0;
         }
@@ -96,9 +108,9 @@ void MenuManager::cusorDown(int value) {
         if (selectedItem.type == MenuType::VALUE_CHANGE) {
             ParamConfig* paramConfig = (ParamConfig*)(getParamConfig(selectedItem.actionParam.paramID));
             if (paramConfig) {
-                int newValue = paramConfig->value - value;
-                if (newValue < paramConfig->minValue) {
-                    newValue = paramConfig->minValue;
+                int newValue = getParamValue(selectedItem.actionParam.paramID) + 1;
+                if (newValue > paramConfig->maxValue) {
+                    newValue = paramConfig->maxValue;
                 }
                 setParamValue(paramConfig->paramID, newValue);
                 menuDisplay_.render(index, selected, currentMenu);
@@ -106,7 +118,7 @@ void MenuManager::cusorDown(int value) {
         }
     } else {
         // メニュー移動モード
-        index += value;
+        index ++;
         if (index >= currentMenu.itemCount) {
             index = currentMenu.itemCount - 1;
         }
@@ -118,15 +130,15 @@ void MenuManager::applySettings() {
     switch (currentMenu.menuID)
     {
     case MenuID::PEDAL_ASSIGNMENT:
-        settingsManager_.setPedalMode(param-1, static_cast<PedalMode>(getParamConfig(ParamID::PARAM_PEDAL_MIDI_MODE)->value));
-        settingsManager_.setMidiChannel(param-1, getParamConfig(ParamID::PARAM_PEDAL_MIDI_CHANNEL)->value);
-        settingsManager_.setCCNumber(param-1, getParamConfig(ParamID::PARAM_PEDAL_CC_NUMBER)->value);
-        settingsManager_.setSwitchBehavior(param-1, static_cast<SwitchBehavior>(getParamConfig(ParamID::PARAM_PEDAL_SWITCH_MODE)->value));
+        settingsManager_.setPedalMode(param-1, static_cast<PedalMode>(getParamValue(ParamID::PARAM_PEDAL_MIDI_MODE)));
+        settingsManager_.setMidiChannel(param-1, getParamValue(ParamID::PARAM_PEDAL_MIDI_CHANNEL));
+        settingsManager_.setCCNumber(param-1, getParamValue(ParamID::PARAM_PEDAL_CC_NUMBER));
+        settingsManager_.setSwitchBehavior(param-1, static_cast<SwitchBehavior>(getParamValue(ParamID::PARAM_PEDAL_SWITCH_MODE)));
         break;
     
     case MenuID::EXP_PEDAL_ASSIGNMENT:
-        settingsManager_.setMidiChannel(PEDAL_COUNT, getParamConfig(ParamID::PARAM_EXP_PEDAL_MIDI_CHANNEL)->value);
-        settingsManager_.setCCNumber(PEDAL_COUNT, getParamConfig(ParamID::PARAM_EXP_PEDAL_CC_NUMBER)->value);
+        settingsManager_.setMidiChannel(PEDAL_COUNT, getParamValue(ParamID::PARAM_EXP_PEDAL_MIDI_CHANNEL));
+        settingsManager_.setCCNumber(PEDAL_COUNT, getParamValue(ParamID::PARAM_EXP_PEDAL_CC_NUMBER));
         break;
     
     default:

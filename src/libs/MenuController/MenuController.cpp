@@ -5,7 +5,7 @@ MenuController* MenuController::self = nullptr;
 void MenuController::begin() {
     rotaryEncoder_.attachRotaryCallback(staticRotaryCallback);
     rotaryEncoder_.attachSwitchCallback(staticSwitchCallback);
-    menuManager_.init(MenuID::SETTINGS);
+    menuManager_.init(MenuID::MAIN);
 }
 
 void MenuController::update() {

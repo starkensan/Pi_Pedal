@@ -41,6 +41,12 @@ public:
     void stop();
 
     /**
+     * @brief 現在のPC番号を取得
+     * @return PC番号
+     */
+    int getPCCurrentNumber() const { return PCCurrentNumber_; }
+
+    /**
      * @brief 定期処理
      */
     void update();

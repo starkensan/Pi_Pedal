@@ -41,7 +41,7 @@ namespace MenuState {
         SUBMENU,
         VALUE_CHANGE,
         FUNCTION,
-        APLLY,
+        APPLY,
         SAVE,
         EXIT
     };
@@ -49,7 +49,7 @@ namespace MenuState {
     struct ParamConfig
     {
         const ParamID paramID;
-        int value;
+        int defaultValue;
         bool isLabelMode; // true: ラベル、false: 数値
         const int minValue;
         const int maxValue;
@@ -121,6 +121,11 @@ namespace MenuState {
      * @return 対応する ParamConfig へのポインタ（存在しない場合は nullptr）
      */
     const ParamConfig* getParamConfig(ParamID id);
+    /**
+     * @brief 現在の param に対応するパラメータ値を取得する
+     * @return パラメータ値
+     */
+    int getParamValue(ParamID id);
     /**
      * @brief 指定した ParamID のパラメータ値を設定する
      * @param id 設定したいパラメータの ParamID

@@ -12,6 +12,12 @@ void MenuDisplay::render(int cursorIndex, bool selected, MenuConfig currentMenu)
         cursorIndex = 0;
     }
 
+    if (prevMenuID != currentMenu.menuID) {
+        // メニューが切り替わった場合、ヘッドインデックスをリセット
+        lastHeadIndex = 0;
+        prevMenuID = currentMenu.menuID;
+    }
+
     if( lastHeadIndex > cursorIndex ) {
         lastHeadIndex = cursorIndex;
     }else if( lastHeadIndex + DRAW_MENU_MAX_ITEMS <= cursorIndex ) {
@@ -38,12 +44,10 @@ void MenuDisplay::render(int cursorIndex, bool selected, MenuConfig currentMenu)
             const ParamConfig& paramConfig = *getParamConfig(menuItem.actionParam.paramID);
             if(menuItem.type == MenuType::VALUE_CHANGE) {
                 // パラメータの現在値を右側に表示
-                if (paramConfig.isLabelMode && 
-                    paramConfig.value >= 0 && 
-                    paramConfig.value <= paramConfig.maxValue) {
-                    rightTexts[i] = String(paramConfig.labels[paramConfig.value]);
+                if (paramConfig.isLabelMode) {
+                    rightTexts[i] = String(paramConfig.labels[getParamValue(menuItem.actionParam.paramID)]);
                 } else {
-                    rightTexts[i] = String(paramConfig.value);
+                    rightTexts[i] = String(getParamValue(menuItem.actionParam.paramID));
                 }
             } else {
                 rightTexts[i] = String("");
@@ -53,6 +57,8 @@ void MenuDisplay::render(int cursorIndex, bool selected, MenuConfig currentMenu)
         }
     }
 
+    int displayCursolIndex = cursorIndex - lastHeadIndex;
+
     display_.clearDisplay();
-    display_.drawMenu(items, cursorIndex, selected, rightTexts);
+    display_.drawMenu(items, displayCursolIndex, selected, rightTexts);
 }
