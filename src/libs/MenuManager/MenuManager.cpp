@@ -1,9 +1,10 @@
 #include "MenuManager.hpp"
-void MenuManager::init(MenuConfig& initMenu, TwoWire* wireInstance, int SDA, int SCL, int screenWidth, int screenHeight) {
-    menuDisplay_.begin(wireInstance, SDA, SCL, screenWidth, screenHeight);
-    currentMenu = initMenu;
+void MenuManager::init(MenuID initMenuID) {
+    menuDisplay_.begin();
+    currentMenu = *getMenuConfig(initMenuID);
     selected = false;
     param = 0;
+    index = 0;
 }
 
 MenuConfig MenuManager::getCurrentMenu() const {

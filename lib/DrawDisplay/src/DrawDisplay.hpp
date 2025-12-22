@@ -19,9 +19,10 @@
 #define FONT_HEIGHT 6
 class DrawDisplay: public HalDisplay {
 public:
-    DrawDisplay();
+    DrawDisplay(TwoWire* wireInstance, int SDA_PIN, int SCL_PIN, int width, int height, int address=DEFAULT_SCREEN_ADDRESS);
+    ~DrawDisplay(){ delete display; }
 
-    void begin(TwoWire* wireInstance, int SDA, int SCL, int screenWidth, int screenHeight, int screenAddress=DEFAULT_SCREEN_ADDRESS) override;
+    void begin() override;
     void clearDisplay() override;
     void drawCentreString(const String &buf) override;
     void drawCentreNumber(const int Number) override;

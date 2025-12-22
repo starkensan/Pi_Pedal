@@ -1,4 +1,9 @@
 #include "MenuDisplay.hpp"
+
+void MenuDisplay::begin() {
+    display_.begin();
+}
+
 void MenuDisplay::render(int cursorIndex, bool selected, MenuConfig currentMenu) {
 
     if( currentMenu.itemCount <= cursorIndex ) {
