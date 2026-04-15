@@ -39,3 +39,20 @@ Issue がない作業は、先に Issue を作成してからブランチを作�
 feat: MIDI チャンネル設定を追加
 docs: ブランチ命名ルールを追加
 ```
+
+## Pull Request Title
+
+Pull Request のタイトルは、以下の形式にしてください。
+
+```text
+{type}: {PR内容} #{issue番号}
+```
+
+`type` はコミットメッセージと同じものを使用してください。
+
+例:
+
+```text
+docs: 開発ルールを追加 #38
+feat: MIDI チャンネル設定を追加 #42
+```
