@@ -1,3 +1,7 @@
-.pio
-.vscode
+.pio/
+.vscode/
 .codex
+
+# KiCad local/generated files
+**/*-backups/
+**/fp-info-cache
