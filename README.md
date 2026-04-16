@@ -41,6 +41,18 @@ KiCad の設計データは `hardware/kicad/`、PDF やガーバーファイル�
 - **スイッチ管理:** デバウンス、ラッチ/モーメンタリ対応  
 - **表示:** Adafruit SSD1306@^2.5.15
 
+## CI
+
+[![PlatformIO Build](https://github.com/starkensan/Pi_Pedal/actions/workflows/platformio-build.yml/badge.svg?branch=develop)](https://github.com/starkensan/Pi_Pedal/actions/workflows/platformio-build.yml)
+
+GitHub Actions で PlatformIO ビルドを自動実行しています。
+
+- ワークフロー: `PlatformIO Build`
+- 対象: `pull_request`, `develop` への `push`
+- ビルド対象: `pico`, `pico-debug`
+
+PR レビュー時は、`PlatformIO Build` が成功していることを確認してください。
+
 
 ## Build & Upload (CUI / PlatformIO CLI)
 
