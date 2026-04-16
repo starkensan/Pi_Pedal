@@ -32,7 +32,7 @@ DAW ソフトやアンプシミュレーター（Amplitube / Helix Native など
 - **ADC IC** MCP3421
 - **その他:** 6.35mm ジャック、TRS、PCB（KiCad）、3Dプリントケース
 
-KiCad の設計データとガーバーファイルは `hardware/MIDI_Pedal/`、3D モデルは `3d-models/` に配置しています。
+KiCad の設計データは `hardware/kicad/`、PDF やガーバーファイルなどの生成物は `hardware/exports/`、3D モデルは `3d-models/` に配置しています。
 
 
 ## Software
