@@ -480,7 +480,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "MIDI_Pedal_Grab/",
+      "plot": "../../exports/gerber/MIDI_Pedal/fabrication-package/MIDI_Pedal_Grab/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "",
