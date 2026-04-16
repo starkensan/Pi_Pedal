@@ -1,0 +1,36 @@
+name: PlatformIO Build
+
+on:
+  pull_request:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        env:
+          - pico
+          - pico-debug
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install PlatformIO Core
+        run: |
+          python -m pip install --upgrade pip
+          pip install platformio
+
+      - name: Build (${{ matrix.env }})
+        env:
+          PLATFORMIO_BUILD_FLAGS: -I include -I lib/config
+        run: pio run -e ${{ matrix.env }}
