@@ -2,9 +2,23 @@ name: PlatformIO Build
 
 on:
   pull_request:
+    paths:
+      - "src/**"
+      - "lib/**"
+      - "include/**"
+      - "test/**"
+      - "platformio.ini"
+      - ".github/workflows/platformio-build.yml"
   push:
     branches:
       - develop
+    paths:
+      - "src/**"
+      - "lib/**"
+      - "include/**"
+      - "test/**"
+      - "platformio.ini"
+      - ".github/workflows/platformio-build.yml"
 
 jobs:
   build:
