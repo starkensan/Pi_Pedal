@@ -5,7 +5,7 @@
 #include <HalPedal.hpp>
 #include <HalExpPedal.hpp>
 #include <HalUSBMIDI.hpp>
-#include <SettingsManager/SettingsManager.hpp>
+#include <SettingsManager/SettingsStore.hpp>
 #include <SettingsManager/SettingsDefs.hpp>
 #include <config.h>
 
@@ -15,7 +15,7 @@ public:
     PedalsController(HalPedal& pedals,
                      HalExpPedal& expPedal,
                      HalUSBMIDI& usbMIDI,
-                     SettingsManager& settings)
+                     SettingsStore& settings)
     : pedals_(pedals)
     , expPedal_(expPedal)
     , usbMIDI_(usbMIDI)
@@ -56,7 +56,7 @@ private:
     HalPedal&    pedals_;
     HalExpPedal& expPedal_;
     HalUSBMIDI&  usbMIDI_;
-    SettingsManager& settings_;
+    SettingsStore& settings_;
 
     static PedalsController* self;
 

@@ -6,10 +6,11 @@
 #include <config.h>
 #include "SettingsDefs.hpp"
 #include "SettingsLock.hpp"
+#include "SettingsStore.hpp"
 
 using namespace SettingsDefs;
 
-class SettingsManager {
+class SettingsManager : public SettingsStore {
 public:
     explicit SettingsManager(HalStorage& storage)
     : storage_(storage)
@@ -31,42 +32,42 @@ public:
      * @brief 全設定取得
      * @return 全設定(Settings)
     */
-    const Settings& getAllSettings() const;
+    const Settings& getAllSettings() const override;
 
     /**
      * @brief 指定ペダルの設定取得
      * @param pedalIndex ペダルインデックス
      * @return ペダル設定(PedalSettings)
     */
-    const PedalSettings& getPedalSettings(size_t pedalIndex) const;
+    const PedalSettings& getPedalSettings(size_t pedalIndex) const override;
 
     /**
      * @brief Setter群 (RAMのみ更新、EEPROMはまだ)
      * @param pedalIndex ペダルインデックス
      * @param mode ペダルモード(PedalMode::CC, PC_NEXT, PC_BACK)
      */
-    void setPedalMode(size_t pedalIndex, PedalMode mode);
+    void setPedalMode(size_t pedalIndex, PedalMode mode) override;
     
     /**
      * @brief MIDIチャンネル設定
      * @param pedalIndex ペダルインデックス
      * @param ch MIDIチャンネル(1-16)
      */
-    void setMidiChannel(size_t pedalIndex, uint8_t ch);
+    void setMidiChannel(size_t pedalIndex, uint8_t ch) override;
 
     /**
      * @brief CC番号設定
      * @param pedalIndex ペダルインデックス
      * @param cc CC番号(0-127)
      */
-    void setCCNumber(size_t pedalIndex, uint8_t cc);
+    void setCCNumber(size_t pedalIndex, uint8_t cc) override;
 
     /**
      * @brief スイッチ動作設定
      * @param pedalIndex ペダルインデックス
      * @param behavior スイッチ動作(SwitchBehavior::MOMENTARY/TOGGLE)
      */
-    void setSwitchBehavior(size_t pedalIndex, SwitchBehavior behavior);
+    void setSwitchBehavior(size_t pedalIndex, SwitchBehavior behavior) override;
 
 
     /**
@@ -74,34 +75,34 @@ public:
      * @param pedalIndex ペダルインデックス
      * @param ps ペダル設定(PedalSettings)
      */
-    void setPedalSettings(size_t pedalIndex, const PedalSettings& ps);
+    void setPedalSettings(size_t pedalIndex, const PedalSettings& ps) override;
 
     /**
      * @brief 全設定一括設定
      * @param s 全設定(Settings)
      */
-    void setAllSettings(const Settings& s);
+    void setAllSettings(const Settings& s) override;
 
     /**
      * @brief RAM→EEPROMへ反映（dirty_のときだけ）
      */
-    bool commitSettings();
+    bool commitSettings() override;
 
     /**
      * @brief dirty_を強制的にfalseにする（EEPROM反映済み扱いにする）
      */
-    void uncommitSettings();
+    void uncommitSettings() override;
 
     /**
      * @brief デフォルト設定をRAM+EEPROMへ反映
      */
-    void FactoryReset();
+    void FactoryReset() override;
 
     /**
      * @brief 設定がEEPROMに反映されていないかどうか取得
      * @return dirty_の値
      */
-    bool getIsDirty() const {
+    bool getIsDirty() const override {
         LockGuard lock(lock_);
         return dirty_;
     }
