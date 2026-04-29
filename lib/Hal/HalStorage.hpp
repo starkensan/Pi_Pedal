@@ -1,7 +1,7 @@
 #ifndef HAL_STORAGE_HPP
 #define HAL_STORAGE_HPP
 
-#include <Arduino.h>
+#include <stddef.h>
 
 /**
  * @brief EEPROM互換のストレージ操作を抽象化するインターフェイス

@@ -1,4 +1,5 @@
 // test/unity_config.cpp
+#ifndef PIPEDAL_NATIVE_TEST
 #include <Arduino.h>
 
 extern "C" {
@@ -22,3 +23,4 @@ void unityOutputComplete(void) {
 }
 
 } // extern "C"
+#endif

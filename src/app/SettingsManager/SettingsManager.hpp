@@ -5,6 +5,7 @@
 #include <HalStorage.hpp>
 #include <config.h>
 #include "SettingsDefs.hpp"
+#include "SettingsLock.hpp"
 
 using namespace SettingsDefs;
 
@@ -15,7 +16,7 @@ public:
     , initialized_(false)
     , dirty_(false)
     {
-        mutex_init(&mtx_);
+        lock_.init();
     }
 
     /**
@@ -101,7 +102,7 @@ public:
      * @return dirty_の値
      */
     bool getIsDirty() const {
-        LockGuard lock(mtx_);
+        LockGuard lock(lock_);
         return dirty_;
     }
 
@@ -123,11 +124,11 @@ private:
 
     bool initialized_;
     bool dirty_;
-    mutable mutex_t mtx_;
+    mutable SettingsLock lock_;
     struct LockGuard {
-        mutex_t& m;
-        LockGuard(mutex_t& m_) : m(m_) { mutex_enter_blocking(&m); }
-        ~LockGuard() { mutex_exit(&m); }
+        SettingsLock& lock;
+        LockGuard(SettingsLock& lock_) : lock(lock_) { lock.lock(); }
+        ~LockGuard() { lock.unlock(); }
     };
 
 };
