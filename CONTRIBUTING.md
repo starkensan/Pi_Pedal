@@ -57,6 +57,23 @@ docs: 開発ルールを追加 #38
 feat: MIDI チャンネル設定を追加 #42
 ```
 
+## Pull Request Checks
+
+Pull Request を作成したら、GitHub Actions の `PlatformIO Build` が成功していることを確認してください。
+
+- 対象 workflow: `.github/workflows/platformio-build.yml`
+- 実行タイミング: `pull_request`、および `develop` への `push`
+- ビルド対象: `pico`, `pico-debug`
+
+ローカルで事前確認する場合は、以下を実行してください。
+
+```bash
+pio run -e pico
+pio run -e pico-debug
+```
+
+PR では、ビルド成功を確認内容に記載してください。
+
 ## Source Layout
 
 モジュール配置は以下の方針で統一します。
