@@ -1,0 +1,11 @@
+# Manual Tests
+
+`test/manual/` には、RP2040 Zero や周辺デバイスを接続して確認する手動テストを置きます。
+
+現在の既存テストスイートはすべて manual に分類しています。CI/native 環境では `test/manual/**` を実行対象から除外します。
+
+manual テストを実行する場合は、必要な実機を接続し、対象スイートを明示してください。
+
+```bash
+pio test -e pico -f manual/test_display
+```
