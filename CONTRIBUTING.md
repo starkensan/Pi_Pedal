@@ -74,6 +74,16 @@ pio run -e pico-debug
 
 PR では、ビルド成功を確認内容に記載してください。
 
+## Test Classification
+
+テストは `test/manual/` と `test/ci/` に分類します。
+
+- `test/manual/`: 実機接続や手動操作が必要なテスト
+- `test/ci/`: PC/native 環境で自動実行できるテスト
+
+新しい CI 向けテストを追加する場合は、実機依存を避け、`test/ci/test_<target>/` に配置してください。
+詳細な分類ルールは `test/README` を参照してください。
+
 ## Source Layout
 
 モジュール配置は以下の方針で統一します。

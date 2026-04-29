@@ -1,11 +1,53 @@
+# Test Layout
 
-This directory is intended for PlatformIO Test Runner and project tests.
+`test/` は PlatformIO Test Runner 用のテストを置くディレクトリです。
+このリポジトリでは、実機確認用の `manual` と CI/PC 自動実行用の `ci` を明確に分けます。
 
-Unit Testing is a software testing method by which individual units of
-source code, sets of one or more MCU program modules together with associated
-control data, usage procedures, and operating procedures, are tested to
-determine whether they are fit for use. Unit testing finds problems early
-in the development cycle.
+## Categories
 
-More information about PlatformIO Unit Testing:
-- https://docs.platformio.org/en/latest/advanced/unit-testing/index.html
+| Category | Path | Purpose | Execution |
+| --- | --- | --- | --- |
+| manual | `test/manual/` | RP2040 Zero、OLED、I2C、USB MIDI、ペダル、ロータリーエンコーダなどの実機確認 | 必要な実機を接続して手動実行 |
+| ci | `test/ci/` | PC/native 環境で安定実行できるユニットテスト | CI とローカルで自動実行 |
+
+## Existing Test Suites
+
+現在の既存テストはすべて実機または Arduino 環境に依存するため、`manual` に分類します。
+
+| Suite | Category | Reason |
+| --- | --- | --- |
+| `test/manual/test_display` | manual | OLED と I2C 接続を前提に描画を確認するため |
+| `test/manual/test_exp_pedal` | manual | MCP3421 とエクスプレッションペダル操作を前提にするため |
+| `test/manual/test_pedal` | manual | GPIO と物理ペダル操作を前提にするため |
+| `test/manual/test_rotary_encoder` | manual | ロータリーエンコーダの物理操作を前提にするため |
+| `test/manual/test_st_mg` | manual | EEPROM 実装を使った Arduino 環境での SettingsManager 確認のため |
+| `test/manual/test_storage` | manual | EEPROM 実装を使った Arduino 環境での Storage 確認のため |
+| `test/manual/test_usbmidi` | manual | TinyUSB/USB MIDI 初期化を前提にするため |
+
+`test/Mocks/` と `test/unity_config.cpp` はテスト補助ファイルです。単独のテストスイートではありません。
+
+## Naming Rules
+
+- 実機・手動確認用テストは `test/manual/test_<target>/` に置きます。
+- CI/PC 自動実行用テストは `test/ci/test_<target>/` に置きます。
+- `<target>` は対象モジュール名を小文字の snake_case で表します。
+- 1 テストスイートにつき `test_main.cpp` を 1 つ置きます。
+
+## CI Exclusion Policy
+
+CI/native テスト環境を追加するときは、`test/manual/**` を CI 実行対象から除外します。
+`platformio.ini` に native 環境を追加する場合は、以下の方針で設定します。
+
+```ini
+[env:native]
+test_filter = ci/*
+test_ignore = manual/*
+```
+
+manual テストを実行する場合は、対象スイートを明示して実行します。
+
+```bash
+pio test -e pico -f manual/test_display
+```
+
+CI に追加できるのは、実機接続・手動操作・時間待ちに依存せず、PC/native 環境で再現可能なテストだけです。
