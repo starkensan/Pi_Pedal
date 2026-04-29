@@ -5,3 +5,9 @@
 現時点では CI 向けテストスイートは未追加です。新規に追加する場合は、`test/ci/test_<target>/test_main.cpp` の形式で作成します。
 
 CI に含めるテストは、実機接続、手動操作、USB/I2C/GPIO の実デバイスに依存しないものに限定します。
+
+CI/PC 向けテストは以下で実行します。
+
+```bash
+pio test -e native
+```

@@ -8,7 +8,7 @@
 | Category | Path | Purpose | Execution |
 | --- | --- | --- | --- |
 | manual | `test/manual/` | RP2040 Zero、OLED、I2C、USB MIDI、ペダル、ロータリーエンコーダなどの実機確認 | 必要な実機を接続して手動実行 |
-| ci | `test/ci/` | PC/native 環境で安定実行できるユニットテスト | CI とローカルで自動実行 |
+| ci | `test/ci/` | PC/native 環境で安定実行できるユニットテスト | `pio test -e native` |
 
 ## Existing Test Suites
 
@@ -36,12 +36,20 @@
 ## CI Exclusion Policy
 
 CI/native テスト環境を追加するときは、`test/manual/**` を CI 実行対象から除外します。
-`platformio.ini` に native 環境を追加する場合は、以下の方針で設定します。
+`platformio.ini` の `env:native` は以下の方針で設定します。
 
 ```ini
 [env:native]
-test_filter = ci/*
-test_ignore = manual/*
+test_filter =
+	ci/*
+test_ignore =
+	manual/*
+```
+
+CI/PC 向けテストは以下で実行します。
+
+```bash
+pio test -e native
 ```
 
 manual テストを実行する場合は、対象スイートを明示して実行します。

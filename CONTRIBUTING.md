@@ -82,6 +82,7 @@ PR では、ビルド成功を確認内容に記載してください。
 - `test/ci/`: PC/native 環境で自動実行できるテスト
 
 新しい CI 向けテストを追加する場合は、実機依存を避け、`test/ci/test_<target>/` に配置してください。
+CI 向けテストは `pio test -e native` で実行します。
 詳細な分類ルールは `test/README` を参照してください。
 
 ## Source Layout
