@@ -5,7 +5,7 @@
 //----------------
 
 bool SettingsManager::begin() {
-    LockGuard lock(mtx_);
+    LockGuard lock(lock_);
     
     if (initialized_) {
         return true;
@@ -26,17 +26,17 @@ bool SettingsManager::begin() {
 }
 
 const Settings& SettingsManager::getAllSettings() const {
-LockGuard lock(mtx_);
-return ramSettings_;
+    LockGuard lock(lock_);
+    return ramSettings_;
 }
 
 const PedalSettings& SettingsManager::getPedalSettings(size_t pedalIndex) const {
-    LockGuard lock(mtx_);
+    LockGuard lock(lock_);
     return ramSettings_.pedal[pedalIndex];
 }
 
 void SettingsManager::setPedalMode(size_t pedalIndex, PedalMode mode) {
-    LockGuard lock(mtx_);
+    LockGuard lock(lock_);
     if (pedalIndex >= MAX_PEDALS) return;
 
     if (ramSettings_.pedal[pedalIndex].pedalMode != mode) {
@@ -47,7 +47,7 @@ void SettingsManager::setPedalMode(size_t pedalIndex, PedalMode mode) {
 }
 
 void SettingsManager::setMidiChannel(size_t pedalIndex, uint8_t ch) {
-    LockGuard lock(mtx_);
+    LockGuard lock(lock_);
     if (pedalIndex >= MAX_PEDALS) return;
     // 必要なら1〜16にクリップとかする
     if (ramSettings_.pedal[pedalIndex].midiChannel != ch) {
@@ -58,7 +58,7 @@ void SettingsManager::setMidiChannel(size_t pedalIndex, uint8_t ch) {
 }
 
 void SettingsManager::setCCNumber(size_t pedalIndex, uint8_t cc) {
-    LockGuard lock(mtx_);
+    LockGuard lock(lock_);
     if (pedalIndex >= MAX_PEDALS) return;
 
     if (ramSettings_.pedal[pedalIndex].ccNumber != cc) {
@@ -69,7 +69,7 @@ void SettingsManager::setCCNumber(size_t pedalIndex, uint8_t cc) {
 }
 
 void SettingsManager::setSwitchBehavior(size_t pedalIndex, SwitchBehavior behavior) {
-    LockGuard lock(mtx_);
+    LockGuard lock(lock_);
     if (pedalIndex >= MAX_PEDALS) return;
 
     if (ramSettings_.pedal[pedalIndex].switchBehavior != behavior) {
@@ -80,7 +80,7 @@ void SettingsManager::setSwitchBehavior(size_t pedalIndex, SwitchBehavior behavi
 }
 
 void SettingsManager::setPedalSettings(size_t pedalIndex, const PedalSettings& ps) {
-    LockGuard lock(mtx_);
+    LockGuard lock(lock_);
     if (pedalIndex >= MAX_PEDALS) return;
 
     bool changed = false;
@@ -109,7 +109,7 @@ void SettingsManager::setPedalSettings(size_t pedalIndex, const PedalSettings& p
 }
 
 void SettingsManager::setAllSettings(const Settings& s) {
-    LockGuard lock(mtx_);
+    LockGuard lock(lock_);
     bool changed = false;
 
     for (size_t i = 0; i < MAX_PEDALS; ++i) {
@@ -141,13 +141,13 @@ void SettingsManager::setAllSettings(const Settings& s) {
 }
 
 void SettingsManager::FactoryReset() {
-    LockGuard lock(mtx_);
+    LockGuard lock(lock_);
     loadFactoryDefaults();
     return;
 }
 
 bool SettingsManager::commitSettings() {
-    LockGuard lock(mtx_);
+    LockGuard lock(lock_);
     if (!dirty_) {
         return true; // 保存する変更なし
     }
@@ -160,7 +160,7 @@ bool SettingsManager::commitSettings() {
 }
 
 void SettingsManager::uncommitSettings() {
-    LockGuard lock(mtx_);
+    LockGuard lock(lock_);
     if (initialized_ == false || dirty_ == false) {
         return;
     }
