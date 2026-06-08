@@ -1,5 +1,6 @@
 #include <unity.h>
 #include <SettingsManager/SettingsManager.hpp>
+#include <SettingsStoreMock.hpp>
 #include <StorageMock.hpp>
 
 static void test_begin_loads_defaults_when_storage_is_empty() {
@@ -63,6 +64,19 @@ static void test_uncommit_restores_persisted_settings() {
     TEST_ASSERT_EQUAL_UINT8(7, manager.getPedalSettings(0).midiChannel);
 }
 
+static void test_settings_store_mock_tracks_dirty_and_commit() {
+    SettingsStoreMock settings;
+
+    TEST_ASSERT_FALSE(settings.getIsDirty());
+    settings.setMidiChannel(0, 12);
+    TEST_ASSERT_TRUE(settings.getIsDirty());
+    TEST_ASSERT_EQUAL_UINT8(12, settings.getPedalSettings(0).midiChannel);
+
+    TEST_ASSERT_TRUE(settings.commitSettings());
+    TEST_ASSERT_FALSE(settings.getIsDirty());
+    TEST_ASSERT_EQUAL(1, settings.commitCalledCount);
+}
+
 int main(int argc, char** argv) {
     (void)argc;
     (void)argv;
@@ -71,5 +85,6 @@ int main(int argc, char** argv) {
     RUN_TEST(test_begin_loads_defaults_when_storage_is_empty);
     RUN_TEST(test_setters_mark_dirty_and_commit_clears_dirty);
     RUN_TEST(test_uncommit_restores_persisted_settings);
+    RUN_TEST(test_settings_store_mock_tracks_dirty_and_commit);
     return UNITY_END();
 }

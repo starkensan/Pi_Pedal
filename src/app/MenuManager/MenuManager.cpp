@@ -43,7 +43,7 @@ void MenuManager::enterSelectedItem() {
         case MenuType::FUNCTION: {
             // 関数を呼び出す
             if(currentMenu.menuID == MenuID::SETTINGS && index) {
-                settingsManager_.FactoryReset();
+                settingsStore_.FactoryReset();
             }
         }
         case MenuType::APPLY: {
@@ -52,7 +52,7 @@ void MenuManager::enterSelectedItem() {
             break;
         }
         case MenuType::SAVE: {
-            settingsManager_.commitSettings();
+            settingsStore_.commitSettings();
             // 保存処理（必要に応じて実装）
             break;
         }
@@ -136,15 +136,15 @@ void MenuManager::applySettings() {
     switch (currentMenu.menuID)
     {
     case MenuID::PEDAL_ASSIGNMENT:
-        settingsManager_.setPedalMode(param-1, static_cast<PedalMode>(getParamValue(ParamID::PARAM_PEDAL_MIDI_MODE)));
-        settingsManager_.setMidiChannel(param-1, getParamValue(ParamID::PARAM_PEDAL_MIDI_CHANNEL));
-        settingsManager_.setCCNumber(param-1, getParamValue(ParamID::PARAM_PEDAL_CC_NUMBER));
-        settingsManager_.setSwitchBehavior(param-1, static_cast<SwitchBehavior>(getParamValue(ParamID::PARAM_PEDAL_SWITCH_MODE)));
+        settingsStore_.setPedalMode(param-1, static_cast<PedalMode>(getParamValue(ParamID::PARAM_PEDAL_MIDI_MODE)));
+        settingsStore_.setMidiChannel(param-1, getParamValue(ParamID::PARAM_PEDAL_MIDI_CHANNEL));
+        settingsStore_.setCCNumber(param-1, getParamValue(ParamID::PARAM_PEDAL_CC_NUMBER));
+        settingsStore_.setSwitchBehavior(param-1, static_cast<SwitchBehavior>(getParamValue(ParamID::PARAM_PEDAL_SWITCH_MODE)));
         break;
     
     case MenuID::EXP_PEDAL_ASSIGNMENT:
-        settingsManager_.setMidiChannel(PEDAL_COUNT, getParamValue(ParamID::PARAM_EXP_PEDAL_MIDI_CHANNEL));
-        settingsManager_.setCCNumber(PEDAL_COUNT, getParamValue(ParamID::PARAM_EXP_PEDAL_CC_NUMBER));
+        settingsStore_.setMidiChannel(PEDAL_COUNT, getParamValue(ParamID::PARAM_EXP_PEDAL_MIDI_CHANNEL));
+        settingsStore_.setCCNumber(PEDAL_COUNT, getParamValue(ParamID::PARAM_EXP_PEDAL_CC_NUMBER));
         break;
     
     default:
@@ -156,16 +156,16 @@ void MenuManager::MemToParam() {
     switch (currentMenu.menuID)
     {
     case MenuID::PEDAL_ASSIGNMENT:
-        setParamValue(ParamID::PARAM_PEDAL_MIDI_MODE, static_cast<int>(settingsManager_.getPedalSettings(param-1).pedalMode));
-        setParamValue(ParamID::PARAM_PEDAL_MIDI_CHANNEL, settingsManager_.getPedalSettings(param-1).midiChannel);
-        setParamValue(ParamID::PARAM_PEDAL_CC_NUMBER, settingsManager_.getPedalSettings(param-1).ccNumber);
-        setParamValue(ParamID::PARAM_PEDAL_SWITCH_MODE, static_cast<int>(settingsManager_.getPedalSettings(param-1).switchBehavior));
+        setParamValue(ParamID::PARAM_PEDAL_MIDI_MODE, static_cast<int>(settingsStore_.getPedalSettings(param-1).pedalMode));
+        setParamValue(ParamID::PARAM_PEDAL_MIDI_CHANNEL, settingsStore_.getPedalSettings(param-1).midiChannel);
+        setParamValue(ParamID::PARAM_PEDAL_CC_NUMBER, settingsStore_.getPedalSettings(param-1).ccNumber);
+        setParamValue(ParamID::PARAM_PEDAL_SWITCH_MODE, static_cast<int>(settingsStore_.getPedalSettings(param-1).switchBehavior));
         
         break;
     
     case MenuID::EXP_PEDAL_ASSIGNMENT:
-        setParamValue(ParamID::PARAM_EXP_PEDAL_MIDI_CHANNEL, settingsManager_.getPedalSettings(PEDAL_COUNT).midiChannel);
-        setParamValue(ParamID::PARAM_EXP_PEDAL_CC_NUMBER, settingsManager_.getPedalSettings(PEDAL_COUNT).ccNumber);
+        setParamValue(ParamID::PARAM_EXP_PEDAL_MIDI_CHANNEL, settingsStore_.getPedalSettings(PEDAL_COUNT).midiChannel);
+        setParamValue(ParamID::PARAM_EXP_PEDAL_CC_NUMBER, settingsStore_.getPedalSettings(PEDAL_COUNT).ccNumber);
         break;
     
     default:

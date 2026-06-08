@@ -5,14 +5,14 @@
 #include <MenuManager/MenuState.hpp>
 #include <HalRotaryEncoder.hpp>
 #include <HalDisplay.hpp>
-#include <SettingsManager/SettingsManager.hpp>
+#include <SettingsManager/SettingsStore.hpp>
 
 using namespace MenuState;
 
 class MenuController {
 public:
-    MenuController(HalDisplay& display, HalRotaryEncoder& rotaryEncoder, SettingsManager& settingsManager)
-        : rotaryEncoder_(rotaryEncoder),  menuManager_(settingsManager, display){
+    MenuController(HalDisplay& display, HalRotaryEncoder& rotaryEncoder, SettingsStore& settingsStore)
+        : rotaryEncoder_(rotaryEncoder),  menuManager_(settingsStore, display){
         self = this;
     }
     ~MenuController() = default;

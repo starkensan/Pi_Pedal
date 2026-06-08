@@ -5,16 +5,16 @@
 #include <config.h>
 #include <HalStorage.hpp>
 
-#include <SettingsManager/SettingsManager.hpp>
+#include <SettingsManager/SettingsStore.hpp>
 #include <MenuDisplay/MenuDisplay.hpp>
 
 using namespace MenuState;
 
 class MenuManager {
 public:
-    MenuManager(SettingsManager& settingsManager, HalDisplay& display)
+    MenuManager(SettingsStore& settingsStore, HalDisplay& display)
     : menuDisplay_(display)
-    , settingsManager_(settingsManager)
+    , settingsStore_(settingsStore)
     {}
     ~MenuManager() = default;
 
@@ -56,7 +56,7 @@ private:
 
     void MemToParam();
 
-    SettingsManager& settingsManager_;
+    SettingsStore& settingsStore_;
     MenuDisplay menuDisplay_;
 
     MenuConfig currentMenu;
