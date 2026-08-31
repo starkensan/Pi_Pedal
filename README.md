@@ -41,6 +41,8 @@ KiCad の設計データは `hardware/kicad/`、PDF やガーバーファイル�
 - **スイッチ管理:** デバウンス、ラッチ/モーメンタリ対応  
 - **表示:** Adafruit SSD1306@^2.5.15
 
+ソフトウェアの構成、MIDI処理、設定メニューの状態遷移は[アーキテクチャドキュメント](docs/ARCHITECTURE.md)を参照してください。
+
 ## CI
 
 [![PlatformIO Build](https://github.com/starkensan/Pi_Pedal/actions/workflows/platformio-build.yml/badge.svg?branch=develop)](https://github.com/starkensan/Pi_Pedal/actions/workflows/platformio-build.yml)
